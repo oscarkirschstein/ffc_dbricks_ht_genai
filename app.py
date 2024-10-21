@@ -62,6 +62,10 @@ def update_dropdown():
     return gr.Dropdown(choices=[os.path.basename(f) for f in json_files])
 
 
+def consolidate_features(doctor_note_files):
+    return consolidate_features(doctor_note_files)
+
+
 with gr.Blocks() as demo:
     gr.Markdown("# Doctor's Note to JSON")
     gr.Markdown(
@@ -90,6 +94,9 @@ with gr.Blocks() as demo:
     demo.load(fn=clear_files, outputs=[output_files, json_preview]).then(
         fn=update_dropdown, outputs=file_selector
     )
+    
+    visualize_btn = gr.Button("Visualize")
+    visualize_btn.click(fn=consolidate_features, inputs=output_files, outputs=json_preview)
 
 if __name__ == "__main__":
     demo.launch()
