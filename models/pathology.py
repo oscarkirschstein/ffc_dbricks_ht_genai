@@ -1,7 +1,7 @@
 from groq import Groq
  
  
-def extract_pathologies(doctor_note):
+def extract_pathology(doctor_note):
     client = Groq(api_key="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")
  
     prompt = """Given the following medical case description, extract and return only the main pathology or condition mentioned. If the pathology is very unclear, return 'unknown', if the text is unrelated to a pathology description, then return 'unrelated'. DON'T RETURN ANYTHING ELSE BUT THE PATHOLOGY:
