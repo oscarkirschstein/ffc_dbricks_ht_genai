@@ -16,6 +16,12 @@ json_files = []
 # Dataframe to store the consolidated symptoms
 consolidated_symptoms = pd.DataFrame()
 
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (datetime, date)):
+            return obj.isoformat()
+        return super().default(obj)
+
 def create_json_file(input_text, selected_date):
     pathology = extract_pathology_model(input_text)
     features = extract_features_model(input_text)
@@ -24,7 +30,7 @@ def create_json_file(input_text, selected_date):
         "doctor_note": input_text,
         "pathology": pathology,
         "features": features,
-        "date": selected_date
+        "date": selected_date.isoformat() if isinstance(selected_date, datetime) else selected_date
     }
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"doctor_note_{current_time}.json"
@@ -34,12 +40,12 @@ def create_json_file(input_text, selected_date):
     file_path = os.path.join(temp_dir, filename)
 
     with open(file_path, "w") as json_file:
-        json.dump(data, json_file, indent=2)
+        json.dump(data, json_file, indent=2, cls=CustomJSONEncoder)
 
     json_files.append(file_path)
 
     # Return the file paths and the JSON content as a string
-    return json.dumps(data, indent=2) if data else "{}"
+    return json.dumps(data, indent=2, cls=CustomJSONEncoder) if data else "{}"
 
 
 def clear_files():
@@ -96,30 +102,56 @@ if __name__ == "__main__":
             "Enter a doctor's note to create a JSON file. Each submission adds a new file."
         )
 
+        # 1. Date picker first
+        date_picker_calendar = Calendar(type="datetime", label="Select date of doctor's note", info="Click the calendar icon to bring up the calendar.")
+
+        # 2. Doctor's note textbox
         input_text = gr.Textbox(
             label="Enter doctor's note",
         )
         
-        # Add calendar picker (from gradio_calendar) to select the date of the doctor's note with a default value of today's date
-        date_picker_calendar = Calendar(type="datetime", label="Select date of doctor's note", info="Click the calendar icon to bring up the calendar.")
+        # 3. Submit button
+        submit_btn = gr.Button("Submit")
 
+        # 4. Dropdown to select file for preview
         file_selector = gr.Dropdown(
             label="Select file to preview", choices=[], interactive=True
         )
+
+        # 5. JSON preview
         json_preview = gr.JSON(label="JSON Preview")
-        
-        # Add consolidation previews
+
+        # 6. Consolidate button
+        consolidate_btn = gr.Button("Consolidate")
+
+        # 7. Consolidation Preview JSON
         consolidation_preview_json = gr.JSON(label="Consolidation Preview JSON")
+
+        # 8. Consolidation Preview Table
         consolidation_preview_table = gr.Dataframe(label="Consolidation Preview Table")
-        
-        # Add visualization (gallery of figures)
+
+        # 9. Visualize button
+        visualize_btn = gr.Button("Visualize")
+
+        # 10. Visualization Gallery
         visualization_gallery = gr.Gallery(label="Visualization Gallery")
+
+        # 11. Clear All button
+        clear_btn = gr.Button("Clear All")
+
+        # Wire up button actions
+        submit_btn.click(
+            fn=create_json_file, inputs=[input_text, date_picker_calendar], outputs=json_preview
+        ).then(fn=update_dropdown, outputs=file_selector)
+
+        input_text.submit(
+            fn=create_json_file, inputs=[input_text, date_picker_calendar], outputs=json_preview
+        ).then(fn=update_dropdown, outputs=file_selector)
 
         file_selector.change(
             fn=preview_json, inputs=file_selector, outputs=json_preview
         )
 
-        clear_btn = gr.Button("Clear All")
         clear_btn.click(
             fn=clear_files, inputs=None, outputs=json_preview
         ).then(fn=update_dropdown, outputs=file_selector)
@@ -128,11 +160,8 @@ if __name__ == "__main__":
             fn=update_dropdown, outputs=file_selector
         )
         
-        consolidate_btn = gr.Button("Consolidate")
         consolidate_btn.click(fn=consolidate_symptoms, inputs=None, outputs=[consolidation_preview_json, consolidation_preview_table])
     
-        visualize_btn = gr.Button("Visualize")
         visualize_btn.click(fn=visualize_symptoms, inputs=None, outputs=visualization_gallery)
 
-    if __name__ == "__main__":
-        demo.launch()
+    demo.launch()
