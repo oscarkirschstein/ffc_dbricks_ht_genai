@@ -1,8 +1,6 @@
 import gradio as gr
-import hashlib
 import json
 from gradio_calendar import Calendar
-import tempfile
 import os
 import pandas as pd
 from datetime import datetime, date
@@ -19,6 +17,9 @@ current_json_file = None
 consolidated_symptoms = pd.DataFrame()
 patient_id = None
 
+# Add this near the top of your script, with other global variables
+json_files_state = gr.State([])
+
 # Function to load existing JSON files
 def load_existing_json_files(patient_id):
     global json_files
@@ -26,13 +27,12 @@ def load_existing_json_files(patient_id):
     doctor_notes_dir = 'data/doctor_notes/'
     for filename in os.listdir(doctor_notes_dir):
         if filename.endswith('.json'):
-            # Get the patient id from the filename
-            # The filename is in the format doctor_note_YYYYMMDD_HHMMSS_patientID_doctorID.json
             match = re.search(r'doctor_note_\d{8}_\d{6}_(\d+)_\d+\.json', filename)
             patient_id_from_filename = match.group(1) if match else None
             if patient_id_from_filename == patient_id:
                 json_files.append(os.path.join(doctor_notes_dir, filename))
-                
+    return json_files  # Return the json_files list
+
 # Function to reset the json_files list
 def reset_json_files():
     global json_files
@@ -65,20 +65,21 @@ def update_patient_id(selected_patient_name):
         patient_id = None
         reset_json_files()
         return (
-            gr.update(open=True),  # Keep patient picker accordion open
+            gr.update(open=True),
             "No patient selected",
-            gr.update(visible=False),  # Keep EHR section hidden
-            gr.update(visible=True)  # Keep welcome message visible
+            gr.update(visible=False),
+            gr.update(visible=True),
+            gr.update(value=[])  # Update the State component instead of returning a list
         )
     patients = load_patients()
     patient_id = patients.get(selected_patient_name)
-    # Load existing JSON files for the selected patient
-    load_existing_json_files(patient_id)
+    json_files = load_existing_json_files(patient_id)
     return (
-        gr.update(open=False),  # Close patient picker accordion
-        f"Selected patient: {selected_patient_name}",
-        gr.update(visible=True),  # Show EHR section
-        gr.update(visible=False)  # Hide welcome message
+        gr.update(open=False),
+        selected_patient_name,
+        gr.update(visible=True),
+        gr.update(visible=False),
+        gr.update(value=json_files)  # Update the State component instead of returning a list
     )
 
 class CustomJSONEncoder(json.JSONEncoder):
@@ -112,21 +113,6 @@ def create_json_file(input_text, selected_date):
     json_files.append(file_path)
 
     return json.dumps(data, indent=2, cls=CustomJSONEncoder) if data else "{}"
-
-# Define additional necessary functions as in the second snippet
-def clear_files():
-    global json_files
-    global consolidated_symptoms
-    doctor_notes_dir = 'data/doctor_notes/'
-    for file_path in json_files:
-        if file_path.startswith(doctor_notes_dir):
-            try:
-                os.remove(file_path)
-            except OSError:
-                pass
-    json_files = []
-    consolidated_symptoms = pd.DataFrame()
-    return "{}"
 
 def preview_json(selected_file):
     if selected_file:
@@ -315,6 +301,31 @@ def update_diagnosis(diagnosis, reasoning, current_file, selected_file):
             return gr.update(visible=True, value=f"Update failed: Invalid JSON in file {file_to_update}"), "{}"
     return gr.update(visible=True, value="Update failed: No file selected"), "{}"  # Show status with error message
 
+def is_dataframe_up_to_date(df, json_files):
+    if df is None or df.empty:
+        return False
+    processed_files = set(df['doctor_note_file'].unique())
+    current_files = set(map(os.path.basename, json_files))
+    return processed_files == current_files
+
+# Modify the on_analytics_tab_select function to accept json_files_state
+def on_analytics_tab_select(json_files_state):
+    global consolidated_symptoms_df  # Assuming this is a global variable
+
+    # Use the json_files_state directly, as it's now passed as an argument
+    if not is_dataframe_up_to_date(consolidated_symptoms_df, json_files_state):
+        result, consolidated_symptoms_df = consolidate_symptoms(json_files_state)
+    else:
+        result = "Data is up to date. No consolidation needed."
+
+    figures = visualize_symptoms(consolidated_symptoms_df)
+    images = []
+    for fig in figures:
+        img_bytes = fig.to_image(format="png")
+        img = Image.open(io.BytesIO(img_bytes))
+        images.append(img)
+    return result, consolidated_symptoms_df, images
+
 # Gradio interface
 with gr.Blocks() as demo:
     # Login Page
@@ -329,18 +340,20 @@ with gr.Blocks() as demo:
     with gr.Column(visible=False) as home_page:
         welcome_message = gr.Textbox(label="Welcome", interactive=False)
         
-        with gr.Accordion("Patient Selection", open=True) as patient_picker_accordion:
-            # Add patient selection dropdown
-            patients = load_patients()
-            patient_choices = ["Pick a patient"] + list(patients.keys())
-            patient_dropdown = gr.Dropdown(
-                label="Select Patient", 
-                choices=patient_choices,
-                value="Pick a patient",
-                interactive=True
-            )
-        
-        patient_display = gr.Textbox(label="Selected Patient", interactive=False)
+        with gr.Row() as patient_selection_row:
+            with gr.Column(scale=3):
+                with gr.Accordion("Patient Selection", open=True) as patient_picker_accordion:
+                    patients = load_patients()
+                    patient_choices = ["Pick a patient"] + list(patients.keys())
+                    patient_dropdown = gr.Dropdown(
+                        label="Select Patient", 
+                        choices=patient_choices,
+                        value="Pick a patient",
+                        interactive=True
+                    )
+            
+            with gr.Column(scale=1):
+                patient_display = gr.Textbox(label="Selected Patient", interactive=False)
         
         with gr.Column(visible=False) as ehr_section:
             gr.Markdown("# EHR - Doctor's Note")
@@ -385,28 +398,25 @@ with gr.Blocks() as demo:
                 with gr.TabItem("Previous visits"):
                     file_selector = gr.Dropdown(label="Select file to preview", choices=[], interactive=True)
                     json_preview = gr.JSON(label="JSON Preview")
-                    consolidate_btn = gr.Button("Consolidate")
-                    consolidation_preview_json = gr.JSON(label="Consolidation Preview JSON")
-                    consolidation_preview_table = gr.Dataframe(label="Consolidation Preview Table")
-                    visualize_btn = gr.Button("Visualize")
+                    
+                with gr.TabItem("Analytics") as analytics_tab:
+                    with gr.Accordion("Data Consolidation", open=False):
+                        consolidation_preview_json = gr.JSON(label="Consolidation Preview JSON")
+                        consolidation_preview_table = gr.Dataframe(label="Consolidation Preview Table")
                     visualization_gallery = gr.Gallery(label="Visualization Gallery")
-                    clear_btn = gr.Button("Clear All")
 
-        # Wire up patient selection
         patient_dropdown.change(
             fn=update_patient_id,
             inputs=patient_dropdown,
-            outputs=[patient_picker_accordion, patient_display, ehr_section, welcome_message]
+            outputs=[patient_picker_accordion, patient_display, ehr_section, welcome_message, json_files_state]
         )
 
-        # Wire up file selector
         file_selector.change(
             fn=preview_json,
             inputs=file_selector,
             outputs=json_preview
         )
 
-        # Wire up button actions
         submit_btn.click(
             fn=submit_note,
             inputs=[input_text, date_picker_calendar],
@@ -432,7 +442,6 @@ with gr.Blocks() as demo:
             outputs=[update_status, json_preview]
         )
 
-        # Wire up symptom update button
         symptom_update_btn.click(
             fn=update_symptom,
             inputs=[
@@ -443,27 +452,19 @@ with gr.Blocks() as demo:
             outputs=[update_status, json_preview, symptom_dropdown, update_status]
         )
 
-        clear_btn.click(
-            fn=clear_files,
-            inputs=None,
-            outputs=json_preview
-        ).then(fn=update_file_selector, outputs=file_selector)
-
-        demo.load(fn=clear_files, outputs=json_preview).then(
-            fn=update_file_selector, outputs=file_selector
+        # Modify the Analytics tab select event
+        analytics_tab.select(
+            fn=on_analytics_tab_select,
+            inputs=json_files_state,  # Pass the State component directly
+            outputs=[consolidation_preview_json, consolidation_preview_table, visualization_gallery]
         )
 
-        consolidate_btn.click(fn=consolidate_symptoms, inputs=None, outputs=[consolidation_preview_json, consolidation_preview_table])
-        visualize_btn.click(fn=visualize_symptoms, inputs=None, outputs=visualization_gallery)
-
-    # Wire up the login button click and Enter key press
+    # Login event
     login_event = login_button.click(
         login, 
         inputs=[username_input, password_input], 
         outputs=[login_page, home_page, login_message, welcome_message]
     )
-    
-    # Add Enter key functionality to both username and password inputs
     username_input.submit(
         login,
         inputs=[username_input, password_input],
@@ -475,7 +476,7 @@ with gr.Blocks() as demo:
         outputs=[login_page, home_page, login_message, welcome_message]
     )
 
-    # Wire up symptom dropdown
+    # Symptom dropdown event
     symptom_dropdown.change(
         fn=load_symptom,
         inputs=[symptom_dropdown, current_file, file_selector],
