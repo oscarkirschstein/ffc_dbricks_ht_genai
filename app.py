@@ -165,6 +165,20 @@ def get_latest_json_file():
         return None
     return max(json_files, key=lambda x: os.path.getctime(os.path.join(doctor_notes_dir, x)))
 
+def extract_symptoms(text):
+    symptoms = []
+    for symptom_name, symptom_data in text['features']['symptoms'].items():
+        symptom = {
+            "name": symptom_name,
+            "location": symptom_data.get('location', ''),
+            "duration": symptom_data.get('duration', ''),
+            "frequency": symptom_data.get('frequency', ''),
+            "intensity": int(symptom_data['intensity']) if symptom_data['intensity'] != '-1' else 0,
+            "is_active": bool(symptom_data.get('is_active', False))
+        }
+        symptoms.append(symptom)
+    return symptoms
+
 def submit_note(input_text, selected_date):
     json_content = create_json_file(input_text, selected_date)
     
@@ -176,27 +190,101 @@ def submit_note(input_text, selected_date):
         
         diagnosis = data.get('diagnosis', {}).get('diagnosis', '')
         diagnosis_reasoning = data.get('diagnosis', {}).get('reasoning', '')
+        symptoms = extract_symptoms(data)
+        symptom_names = [symptom['name'] for symptom in symptoms]
+        
+        first_symptom = symptoms[0] if symptoms else {}
         
         return (
-            gr.update(open=False),  # Close the note accordion
-            diagnosis,  # Display the extracted diagnosis
-            diagnosis_reasoning,  # Display the diagnosis reasoning
-            gr.update(visible=True),  # Make the diagnosis component visible
-            json_content,  # Update the JSON preview
-            latest_file,  # Return the filename of the current JSON file
-            gr.update(interactive=False, variant="secondary"),  # Disable and grey out submit button
-            gr.update(visible=True)  # Show the "New doctor note" button
+            gr.update(open=False),
+            diagnosis,
+            diagnosis_reasoning,
+            gr.update(visible=True),  # Show diagnosis_component
+            json_content,
+            latest_file,
+            gr.update(interactive=False, variant="secondary"),
+            gr.update(visible=True),
+            gr.update(choices=symptom_names, value=symptom_names[0] if symptom_names else None, visible=True),
+            gr.update(value=first_symptom.get('name', '')),
+            gr.update(value=first_symptom.get('location', '')),
+            gr.update(value=first_symptom.get('duration', '')),
+            gr.update(value=first_symptom.get('frequency', '')),
+            gr.update(value=first_symptom.get('intensity', 0)),
+            gr.update(value=first_symptom.get('is_active', False)),
+            gr.update(visible=True)  # Show symptoms_component
         )
     return (
         gr.update(open=True),
         "",
         "",
-        gr.update(visible=False),
+        gr.update(visible=False),  # Hide diagnosis_component
         "{}",
         "",
         gr.update(interactive=True, variant="primary"),
-        gr.update(visible=False)
+        gr.update(visible=False),
+        gr.update(choices=[], value=None, visible=False),
+        gr.update(value={}, visible=False),
+        gr.update(visible=False)  # Hide symptoms_component
     )
+
+def update_symptom(original_name, name, location, duration, frequency, intensity, is_active, current_file, selected_file):
+    file_to_update = current_file if current_file else selected_file
+    if file_to_update:
+        file_path = os.path.join('data/doctor_notes/', file_to_update)
+        try:
+            with open(file_path, 'r+') as file:
+                data = json.load(file)
+                symptoms = data['features']['symptoms']
+                
+                new_symptom_data = {
+                    'location': str(location),
+                    'duration': str(duration),
+                    'frequency': str(frequency),
+                    'intensity': str(intensity),
+                    'is_active': str(is_active).capitalize()
+                }
+                
+                # Check if the symptom name changed
+                if original_name == name:
+                    symptoms[name].update(new_symptom_data)
+                else:
+                    # Remove the old entry and add the new one
+                    symptoms[name] = symptoms.pop(original_name)
+                    symptoms[name] = new_symptom_data
+                
+                file.seek(0)
+                json.dump(data, file, indent=2)
+                file.truncate()
+            
+            symptom_names = list(data['features']['symptoms'].keys())
+            return gr.update(visible=False), json.dumps(data, indent=2), gr.update(choices=symptom_names, value=name), gr.update(visible=True, value="Symptom updated successfully.")
+        except IOError:
+            return gr.update(visible=True, value=f"Update failed: Could not write to file {file_to_update}"), "{}", gr.update(), gr.update(visible=True, value="Update failed: IOError occurred.")
+        except json.JSONDecodeError:
+            return gr.update(visible=True, value=f"Update failed: Invalid JSON in file {file_to_update}"), "{}", gr.update(), gr.update(visible=True, value="Update failed: JSONDecodeError occurred.")
+    return gr.update(visible=True, value="Update failed: No file selected"), "{}", gr.update(), gr.update(visible=True, value="Update failed: No file selected.")
+
+def load_symptom(symptom_name, current_file, selected_file):
+    file_to_load = current_file if current_file else selected_file
+    if file_to_load:
+        file_path = os.path.join('data/doctor_notes/', file_to_load)
+        try:
+            with open(file_path, 'r') as file:
+                data = json.load(file)
+            symptom_data = data['features']['symptoms'].get(symptom_name, {})
+            return (
+                symptom_name,
+                symptom_data.get('location', ''),
+                symptom_data.get('duration', ''),
+                symptom_data.get('frequency', ''),
+                int(symptom_data.get('intensity', '0')),
+                bool(symptom_data.get('is_active', False))
+            )
+        except IOError:
+            pass
+        except json.JSONDecodeError:
+            pass
+    return '', '', '', '', 0, False
 
 def reset_interface():
     return (
@@ -205,7 +293,8 @@ def reset_interface():
         gr.update(visible=False),  # Hide diagnosis_component
         gr.update(interactive=True, variant="primary"),  # Enable and make submit button green
         gr.update(visible=False),  # Hide "New doctor note" button
-        gr.update(open=True)  # Expand the doctor's note accordion
+        gr.update(open=True),  # Expand the doctor's note accordion
+        gr.update(value=[], visible=False)  # Reset and hide symptoms
     )
 
 def update_diagnosis(diagnosis, reasoning, current_file, selected_file):
@@ -233,7 +322,7 @@ with gr.Blocks() as demo:
         gr.Markdown("# Login")
         username_input = gr.Textbox(label="Username", placeholder="Enter your username")
         password_input = gr.Textbox(label="Password", placeholder="Enter your password", type="password")
-        login_button = gr.Button("Login")
+        login_button = gr.Button("Login", variant="primary")
         login_message = gr.Textbox(label="Login Status", visible=False)
 
     # Home Page (hidden initially)
@@ -262,14 +351,14 @@ with gr.Blocks() as demo:
                 with gr.TabItem("Current visit"):
                     date_picker_calendar = Calendar(type="datetime", label="Select date of doctor's note", info="Click the calendar icon to bring up the calendar.")
                     
-                    with gr.Column() as note_component:
-                        with gr.Accordion("Doctor's Note", open=True) as note_accordion:
+                    with gr.Accordion("Doctor's Note", open=True) as note_accordion:
+                        with gr.Column() as note_component:
                             input_text = gr.Textbox(label="Enter doctor's note", lines=10)
                             submit_btn = gr.Button("Submit", variant="primary")
                             new_note_btn = gr.Button("New doctor note", visible=False)
                     
-                    with gr.Column(visible=False) as diagnosis_component:
-                        with gr.Accordion("Diagnosis", open=True) as diagnosis_accordion:
+                    with gr.Accordion("Diagnosis", open=True) as diagnosis_accordion:
+                        with gr.Column(visible=False) as diagnosis_component:
                             with gr.Group():
                                 with gr.Row():
                                     diagnosis_textbox = gr.Textbox(label="Extracted Diagnosis", interactive=True)
@@ -281,17 +370,18 @@ with gr.Blocks() as demo:
                             
                             update_status = gr.Textbox(label="Update Status", visible=False, interactive=False)
                     
-                    with gr.Column(visible=False) as symptoms_component:
-                        with gr.Accordion("Symptoms", open=True) as symptoms_accordion:
-                            with gr.Group() as symptom_group:
-                                symptom_name_textbox = gr.Textbox(label="Symptom", interactive=True)
-                                symptom_location_textbox = gr.Textbox(label="Location", interactive=True)
-                                symptom_duration_textbox = gr.Textbox(label="Duration", interactive=True)
-                                symptom_frequency_textbox = gr.Textbox(label="Frequency", interactive=True)
-                                symptom_intensity_slider = gr.Slider(label="Intensity", interactive=True)
-                                symptom_is_active_checkbox = gr.Checkbox(label="Is Active", interactive=True)
-                                symptom_update_btn = gr.Button("Update Symptom")
-                                
+                    with gr.Accordion("Symptoms", open=True) as symptoms_accordion:
+                        with gr.Column(visible=False) as symptoms_component:
+                            symptom_dropdown = gr.Dropdown(label="Select Symptom", choices=[], interactive=True)
+                            with gr.Group():
+                                symptom_name = gr.Textbox(label="Symptom Name")
+                                symptom_location = gr.Textbox(label="Location")
+                                symptom_duration = gr.Textbox(label="Duration")
+                                symptom_frequency = gr.Textbox(label="Frequency")
+                                symptom_intensity = gr.Slider(label="Intensity", minimum=0, maximum=10, step=1)
+                                symptom_is_active = gr.Checkbox(label="Is Active")
+                            symptom_update_btn = gr.Button("Update Symptom")
+                    
                 with gr.TabItem("Previous visits"):
                     file_selector = gr.Dropdown(label="Select file to preview", choices=[], interactive=True)
                     json_preview = gr.JSON(label="JSON Preview")
@@ -320,22 +410,38 @@ with gr.Blocks() as demo:
         submit_btn.click(
             fn=submit_note,
             inputs=[input_text, date_picker_calendar],
-            outputs=[note_accordion, diagnosis_textbox, reasoning_textbox, diagnosis_component, 
-                     json_preview, current_file, submit_btn, new_note_btn]
+            outputs=[
+                note_accordion, diagnosis_textbox, reasoning_textbox, diagnosis_component, 
+                json_preview, current_file, submit_btn, new_note_btn, symptom_dropdown,
+                symptom_name, symptom_location, symptom_duration, symptom_frequency, 
+                symptom_intensity, symptom_is_active,
+                symptoms_component
+            ]
         ).then(fn=update_file_selector, outputs=file_selector)
 
         new_note_btn.click(
             fn=reset_interface,
             inputs=[],
-            outputs=[current_file, input_text, diagnosis_component, submit_btn, new_note_btn, note_accordion]
+            outputs=[current_file, input_text, diagnosis_component, submit_btn, new_note_btn, note_accordion, symptom_dropdown,
+                    gr.Group([symptom_name, symptom_location, symptom_duration, symptom_frequency, symptom_intensity, symptom_is_active])]
         )
 
-        input_text.submit(
-            fn=submit_note,
-            inputs=[input_text, date_picker_calendar],
-            outputs=[note_accordion, diagnosis_textbox, reasoning_textbox, diagnosis_component, 
-                     json_preview, current_file, submit_btn, new_note_btn]
-        ).then(fn=update_file_selector, outputs=file_selector)
+        diagnosis_update_btn.click(
+            fn=update_diagnosis,
+            inputs=[diagnosis_textbox, reasoning_textbox, current_file, file_selector],
+            outputs=[update_status, json_preview]
+        )
+
+        # Wire up symptom update button
+        symptom_update_btn.click(
+            fn=update_symptom,
+            inputs=[
+                symptom_dropdown,  # Pass the original name from the dropdown
+                symptom_name, symptom_location, symptom_duration, symptom_frequency, symptom_intensity, symptom_is_active,
+                current_file, file_selector
+            ],
+            outputs=[update_status, json_preview, symptom_dropdown, update_status]
+        )
 
         clear_btn.click(
             fn=clear_files,
@@ -349,12 +455,6 @@ with gr.Blocks() as demo:
 
         consolidate_btn.click(fn=consolidate_symptoms, inputs=None, outputs=[consolidation_preview_json, consolidation_preview_table])
         visualize_btn.click(fn=visualize_symptoms, inputs=None, outputs=visualization_gallery)
-
-        diagnosis_update_btn.click(
-            fn=update_diagnosis,
-            inputs=[diagnosis_textbox, reasoning_textbox, current_file, file_selector],
-            outputs=[update_status, json_preview]
-        )
 
     # Wire up the login button click and Enter key press
     login_event = login_button.click(
@@ -373,6 +473,13 @@ with gr.Blocks() as demo:
         login,
         inputs=[username_input, password_input],
         outputs=[login_page, home_page, login_message, welcome_message]
+    )
+
+    # Wire up symptom dropdown
+    symptom_dropdown.change(
+        fn=load_symptom,
+        inputs=[symptom_dropdown, current_file, file_selector],
+        outputs=[symptom_name, symptom_location, symptom_duration, symptom_frequency, symptom_intensity, symptom_is_active]
     )
 
 demo.launch()
