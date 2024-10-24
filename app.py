@@ -189,8 +189,8 @@ with gr.Blocks() as demo:
             
             with gr.Tabs() as tabs:
                 with gr.TabItem("Current visit"):
-                    date_picker_calendar = Calendar(type="datetime", label="Select date of doctor's note", info="Click the calendar icon to bring up the calendar.")
-                    input_text = gr.Textbox(label="Enter doctor's note")
+                    date_picker_calendar = Calendar(type="datetime", label="Select date of doctor's note")
+                    input_text = gr.Textbox(label="Enter doctor's note", lines=10, max_lines=20)
                     submit_btn = gr.Button("Submit")
 
                 with gr.TabItem("Previous visits"):
