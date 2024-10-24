@@ -6,7 +6,7 @@ import tempfile
 import os
 import pandas as pd
 from datetime import datetime, date
-from models.pathology import extract_pathology as extract_pathology_model
+from models.diagnosis import extract_diagnosis as extract_diagnosis_model
 from models.features import extract_features as extract_features_model
 from models.visualizations import consolidate_symptoms as consolidate_symptoms_model, visualize_symptoms as visualize_symptoms_model
 import io
@@ -15,6 +15,7 @@ from PIL import Image
 
 # Global variables
 json_files = []
+current_json_file = None
 consolidated_symptoms = pd.DataFrame()
 patient_id = None
 
@@ -89,12 +90,12 @@ class CustomJSONEncoder(json.JSONEncoder):
 # Create JSON files based on doctor's note and date
 def create_json_file(input_text, selected_date):
     global json_files
-    pathology = extract_pathology_model(input_text)
+    diagnosis = extract_diagnosis_model(input_text)
     features = extract_features_model(input_text)
 
     data = {
         "doctor_note": input_text,
-        "pathology": pathology,
+        "diagnosis": diagnosis,
         "features": features,
         "date": selected_date.isoformat() if isinstance(selected_date, datetime) else selected_date
     }
@@ -157,6 +158,74 @@ def visualize_symptoms():
         images.append(img)
     return images
 
+def get_latest_json_file():
+    doctor_notes_dir = 'data/doctor_notes/'
+    json_files = [f for f in os.listdir(doctor_notes_dir) if f.endswith('.json')]
+    if not json_files:
+        return None
+    return max(json_files, key=lambda x: os.path.getctime(os.path.join(doctor_notes_dir, x)))
+
+def submit_note(input_text, selected_date):
+    json_content = create_json_file(input_text, selected_date)
+    
+    latest_file = get_latest_json_file()
+    if latest_file:
+        file_path = os.path.join('data/doctor_notes/', latest_file)
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        
+        diagnosis = data.get('diagnosis', {}).get('diagnosis', '')
+        diagnosis_reasoning = data.get('diagnosis', {}).get('reasoning', '')
+        
+        return (
+            gr.update(open=False),  # Close the note accordion
+            diagnosis,  # Display the extracted diagnosis
+            diagnosis_reasoning,  # Display the diagnosis reasoning
+            gr.update(visible=True),  # Make the diagnosis component visible
+            json_content,  # Update the JSON preview
+            latest_file,  # Return the filename of the current JSON file
+            gr.update(interactive=False, variant="secondary"),  # Disable and grey out submit button
+            gr.update(visible=True)  # Show the "New doctor note" button
+        )
+    return (
+        gr.update(open=True),
+        "",
+        "",
+        gr.update(visible=False),
+        "{}",
+        "",
+        gr.update(interactive=True, variant="primary"),
+        gr.update(visible=False)
+    )
+
+def reset_interface():
+    return (
+        None,  # Reset current_file
+        "",    # Clear input_text
+        gr.update(visible=False),  # Hide diagnosis_component
+        gr.update(interactive=True, variant="primary"),  # Enable and make submit button green
+        gr.update(visible=False),  # Hide "New doctor note" button
+        gr.update(open=True)  # Expand the doctor's note accordion
+    )
+
+def update_diagnosis(diagnosis, reasoning, current_file, selected_file):
+    file_to_update = current_file if current_file else selected_file
+    if file_to_update:
+        file_path = os.path.join('data/doctor_notes/', file_to_update)
+        try:
+            with open(file_path, 'r+') as file:
+                data = json.load(file)
+                data['diagnosis']['diagnosis'] = diagnosis
+                file.seek(0)
+                json.dump(data, file, indent=2)
+                file.truncate()
+            return gr.update(visible=False), json.dumps(data, indent=2)  # Hide status, update JSON preview
+        except IOError:
+            return gr.update(visible=True, value=f"Update failed: Could not write to file {file_to_update}"), "{}"
+        except json.JSONDecodeError:
+            return gr.update(visible=True, value=f"Update failed: Invalid JSON in file {file_to_update}"), "{}"
+    return gr.update(visible=True, value="Update failed: No file selected"), "{}"  # Show status with error message
+
 # Gradio interface
 with gr.Blocks() as demo:
     # Login Page
@@ -187,12 +256,42 @@ with gr.Blocks() as demo:
         with gr.Column(visible=False) as ehr_section:
             gr.Markdown("# EHR - Doctor's Note")
             
+            current_file = gr.State(None)  # Store the current JSON file name
+            
             with gr.Tabs() as tabs:
                 with gr.TabItem("Current visit"):
-                    date_picker_calendar = Calendar(type="datetime", label="Select date of doctor's note")
-                    input_text = gr.Textbox(label="Enter doctor's note", lines=10, max_lines=20)
-                    submit_btn = gr.Button("Submit")
-
+                    date_picker_calendar = Calendar(type="datetime", label="Select date of doctor's note", info="Click the calendar icon to bring up the calendar.")
+                    
+                    with gr.Column() as note_component:
+                        with gr.Accordion("Doctor's Note", open=True) as note_accordion:
+                            input_text = gr.Textbox(label="Enter doctor's note", lines=10)
+                            submit_btn = gr.Button("Submit", variant="primary")
+                            new_note_btn = gr.Button("New doctor note", visible=False)
+                    
+                    with gr.Column(visible=False) as diagnosis_component:
+                        with gr.Accordion("Diagnosis", open=True) as diagnosis_accordion:
+                            with gr.Group():
+                                with gr.Row():
+                                    diagnosis_textbox = gr.Textbox(label="Extracted Diagnosis", interactive=True)
+                                with gr.Row():
+                                    diagnosis_update_btn = gr.Button("Update Diagnosis")
+                            
+                            with gr.Accordion("Diagnosis Reasoning", open=False):
+                                reasoning_textbox = gr.Textbox(label="Reasoning", interactive=False)
+                            
+                            update_status = gr.Textbox(label="Update Status", visible=False, interactive=False)
+                    
+                    with gr.Column(visible=False) as symptoms_component:
+                        with gr.Accordion("Symptoms", open=True) as symptoms_accordion:
+                            with gr.Group() as symptom_group:
+                                symptom_name_textbox = gr.Textbox(label="Symptom", interactive=True)
+                                symptom_location_textbox = gr.Textbox(label="Location", interactive=True)
+                                symptom_duration_textbox = gr.Textbox(label="Duration", interactive=True)
+                                symptom_frequency_textbox = gr.Textbox(label="Frequency", interactive=True)
+                                symptom_intensity_slider = gr.Slider(label="Intensity", interactive=True)
+                                symptom_is_active_checkbox = gr.Checkbox(label="Is Active", interactive=True)
+                                symptom_update_btn = gr.Button("Update Symptom")
+                                
                 with gr.TabItem("Previous visits"):
                     file_selector = gr.Dropdown(label="Select file to preview", choices=[], interactive=True)
                     json_preview = gr.JSON(label="JSON Preview")
@@ -219,15 +318,23 @@ with gr.Blocks() as demo:
 
         # Wire up button actions
         submit_btn.click(
-            fn=create_json_file,
+            fn=submit_note,
             inputs=[input_text, date_picker_calendar],
-            outputs=json_preview
+            outputs=[note_accordion, diagnosis_textbox, reasoning_textbox, diagnosis_component, 
+                     json_preview, current_file, submit_btn, new_note_btn]
         ).then(fn=update_file_selector, outputs=file_selector)
 
+        new_note_btn.click(
+            fn=reset_interface,
+            inputs=[],
+            outputs=[current_file, input_text, diagnosis_component, submit_btn, new_note_btn, note_accordion]
+        )
+
         input_text.submit(
-            fn=create_json_file,
+            fn=submit_note,
             inputs=[input_text, date_picker_calendar],
-            outputs=json_preview
+            outputs=[note_accordion, diagnosis_textbox, reasoning_textbox, diagnosis_component, 
+                     json_preview, current_file, submit_btn, new_note_btn]
         ).then(fn=update_file_selector, outputs=file_selector)
 
         clear_btn.click(
@@ -242,6 +349,12 @@ with gr.Blocks() as demo:
 
         consolidate_btn.click(fn=consolidate_symptoms, inputs=None, outputs=[consolidation_preview_json, consolidation_preview_table])
         visualize_btn.click(fn=visualize_symptoms, inputs=None, outputs=visualization_gallery)
+
+        diagnosis_update_btn.click(
+            fn=update_diagnosis,
+            inputs=[diagnosis_textbox, reasoning_textbox, current_file, file_selector],
+            outputs=[update_status, json_preview]
+        )
 
     # Wire up the login button click and Enter key press
     login_event = login_button.click(
