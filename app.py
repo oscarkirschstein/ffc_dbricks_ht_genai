@@ -4,6 +4,7 @@ import tempfile
 import os
 from datetime import datetime
 from models.features import extract_features
+from models.tools import extract_tools
 
 # List to store the paths of created JSON files
 json_files = []
@@ -12,12 +13,16 @@ json_files = []
 def create_json_file(input_text):
     # pathology = extract_pathologies(input_text)
     features = extract_features(input_text)
+    tools = extract_tools(input_text)
 
+    # results
     data = {
         # "doctor_note": input_text,
         # "pathology": pathology,
-        "features": features,
+        # "features": features,
+        "tools": tools,
     }
+
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"doctor_note_{current_time}.json"
 
