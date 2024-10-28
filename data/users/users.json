@@ -1,0 +1,65 @@
+{
+    "0": {
+        "username": "test",
+        "first_name": "Jimmy",
+        "last_name": "Vlekke",
+        "password": "test",
+        "role": "doctor"
+    },
+    "1": {
+        "username": "william_smith",
+        "first_name": "William",
+        "last_name": "Smith",
+        "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+        "role": "doctor"
+    },
+    "2": {
+        "username": "andrea_jones",
+        "first_name": "Andrea",
+        "last_name": "Jones",
+        "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+        "role": "patient"
+    },
+    "3": {
+        "username": "peter_johnson",
+        "first_name": "Peter",
+        "last_name": "Johnson",
+        "password": "7e2cd40797b8faacd62c5c2ee3d0c170c589a6c91d48f7d59c7b21183f8e8b8f",
+        "role": "doctor"
+    },
+    "4": {
+        "username": "silvia_brown",
+        "first_name": "Silvia",
+        "last_name": "Brown",
+        "password": "b133a0c0e9bee3be20163d2ad31d6248db292aa6dcb1ee087a2aa50e0fc75ae2",
+        "role": "patient"
+    },
+    "5": {
+        "username": "emily_davis",
+        "first_name": "Emily",
+        "last_name": "Davis",
+        "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+        "role": "doctor"
+    },
+    "6": {
+        "username": "michael_wilson",
+        "first_name": "Michael",
+        "last_name": "Wilson",
+        "password": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
+        "role": "patient"
+    },
+    "7": {
+        "username": "sarah_taylor",
+        "first_name": "Sarah",
+        "last_name": "Taylor",
+        "password": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "role": "doctor"
+    },
+    "8": {
+        "username": "david_martinez",
+        "first_name": "David",
+        "last_name": "Martinez",
+        "password": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "role": "patient"
+    }
+}

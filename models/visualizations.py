@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 
 
 def clean_filename(filename):
-    # Use regex to match the expected format: 'doctor_note_yyyymmdd_hhmmss.json' and return the matched string
-    match = re.search(r'doctor_note_\d{8}_\d{6}\.json', filename)
+    # Use regex to match the expected format: 'doctor_note_yyyymmdd_hhmmss_doctorid_patientid.json' and return the matched string
+    match = re.search(r'doctor_note_\d{8}_\d{6}_\d+_\d+\.json', filename)
     return match.group(0) if match else None
 
 
@@ -22,7 +22,7 @@ def consolidate_symptoms(doctor_note_files):
         with open(doctor_note_file_path, 'r') as file:
             doctor_note = json.load(file)
         doctor_note_files_dict[os.path.basename(doctor_note_file_path)] = doctor_note
-        pathology = doctor_note["pathology"]
+        diagnosis = doctor_note["diagnosis"]["diagnosis"]
         features = doctor_note["features"]
         for symptom in features["symptoms"].items():
             key = os.path.basename(doctor_note_file_path)
@@ -114,13 +114,14 @@ def consolidate_symptoms(doctor_note_files):
                 symptom_name = symptom_mapping["symptoms"][symptom][doctor_note_file_name]
                 doctor_note_file_name = clean_filename(doctor_note_file_name)
                 doctor_note = doctor_note_files_dict[doctor_note_file_name]
-                pathology = doctor_note["pathology"]
+                # Update this line to correctly access the diagnosis
+                diagnosis = doctor_note["diagnosis"]["diagnosis"]
                 symptom_data = doctor_note["features"]["symptoms"][symptom_name]
                 row = {
                     "symptom": symptom,
                     "symptom_name": symptom_name,
                     "doctor_note_file": doctor_note_file_name,
-                    "pathology": pathology,
+                    "diagnosis": diagnosis,
                     "date": doctor_note["date"],
                     "location": symptom_data["location"],
                     "duration": symptom_data["duration"],
@@ -201,7 +202,6 @@ def active_symptoms(df):
 def symptom_wordcloud(df):
     text = ' '.join(df['symptom_name'].values)
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
-
-    plt.figure(figsize=(10, 5))
-    fig = px.imshow(wordcloud, labels=dict(image="Word Cloud"))
-    return fig
+    
+    # Return the wordcloud image directly as a PIL Image
+    return wordcloud.to_image()

@@ -1,0 +1,50 @@
+{
+  "doctor_id": "0",
+  "patient_id": "2",
+  "date": "2024-10-18T16:08:03",
+  "doctor_note": "The patient describes worsening symptoms, with sharp pain now radiating down to the calf and foot, with intermittent weakness in the right leg. Pain intensity has escalated to 8/10. Walking is significantly impaired, and the patient reports tripping on uneven surfaces due to leg weakness. Sleep is highly disturbed despite pain medications. Naproxen has provided minimal relief. Numbness in the right leg has become persistent. The patient denies bowel or bladder dysfunction but is visibly frustrated by the lack of improvement. Referred for a neurologist consultation and prescribed a short course of oral corticosteroids to reduce inflammation.",
+  "diagnosis": {
+    "diagnosis": "lumbar radiculopathy or possible sciatica with neurological deficits",
+    "reasoning": "Sharp pain radiating down to the calf and foot, intermittent weakness in the right leg, numbness in the right leg, impaired walking, and lack of response to pain medications."
+  },
+  "features": {
+    "symptoms": {
+      "right leg pain": {
+        "description": "Sharp pain radiating down to the calf and foot.",
+        "location": "right leg",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "8",
+        "is_active": "True",
+        "raw_data": "The patient describes worsening symptoms, with sharp pain now radiating down to the calf and foot, with intermittent weakness in the right leg."
+      },
+      "intermittent weakness in right leg": {
+        "description": "Intermittent weakness in the right leg.",
+        "location": "right leg",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "The patient describes worsening symptoms, with sharp pain now radiating down to the calf and foot, with intermittent weakness in the right leg."
+      },
+      "sleep quality": {
+        "description": "Sleep is highly disturbed despite pain medications.",
+        "location": "",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "Sleep is highly disturbed despite pain medications."
+      },
+      "leg numbness": {
+        "description": "Numbness in the right leg has become persistent.",
+        "location": "right leg",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "Numbness in the right leg has become persistent."
+      }
+    }
+  }
+}
