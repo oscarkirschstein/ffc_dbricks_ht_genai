@@ -1,0 +1,50 @@
+{
+  "doctor_id": "0",
+  "patient_id": "2",
+  "date": "2024-10-15T16:07:48",
+  "doctor_note": "Patient returns with increased lumbar pain, now radiating to the right hip and consistently affecting the right leg. Pain intensity is reported as 7/10. Numbness and tingling in the right leg are now more frequent. The patient reports difficulty walking for extended periods and trouble sleeping due to discomfort. He has continued taking ibuprofen with limited relief. Physical therapy sessions have not provided noticeable improvement. No signs of bowel or bladder dysfunction, fever, or weight loss. Recommend trying naproxen 500 mg twice daily and an MRI for further evaluation.",
+  "diagnosis": {
+    "diagnosis": "lumbar radiculopathy",
+    "reasoning": "Radiating pain to the right hip and leg, numbness and tingling in the right leg, difficulty walking and sleeping due to pain"
+  },
+  "features": {
+    "symptoms": {
+      "lower lumbar pain": {
+        "description": "Increased lumbar pain, now radiating to the right hip and consistently affecting the right leg.",
+        "location": "lumbar region",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "7",
+        "is_active": "True",
+        "raw_data": "Patient returns with increased lumbar pain, now radiating to the right hip and consistently affecting the right leg. Pain intensity is reported as 7/10."
+      },
+      "numbness and tingling in the right leg": {
+        "description": "Numbness and tingling in the right leg are now more frequent.",
+        "location": "right leg",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "Numbness and tingling in the right leg are now more frequent."
+      },
+      "sleep quality": {
+        "description": "Trouble sleeping due to discomfort.",
+        "location": "",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "He reports difficulty walking for extended periods and trouble sleeping due to discomfort."
+      },
+      "difficulty walking": {
+        "description": "Difficulty walking for extended periods.",
+        "location": "",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "He reports difficulty walking for extended periods and trouble sleeping due to discomfort."
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "doctor_id": "0",
+  "patient_id": "2",
+  "date": "2024-10-10T16:07:30",
+  "doctor_note": "The patient presents with a dull, aching pain in the lumbar region, radiating to the right hip, and experiencing occasional numbness in the right leg. Pain intensity rated at 5/10. He reports using ibuprofen 400 mg twice daily with moderate relief. No bowel or bladder dysfunction reported. The patient notes worsening symptoms over the past two weeks, including difficulty maintaining physical activity. He denies fever or weight loss. Referred to physical therapy for initial treatment plan.",
+  "diagnosis": {
+    "diagnosis": "lumbar radiculopathy",
+    "reasoning": "Dull, aching pain in the lumbar region radiating to the right hip, numbness in the right leg, and worsening symptoms over two weeks despite ibuprofen use."
+  },
+  "features": {
+    "symptoms": {
+      "lower lumbar pain": {
+        "description": "Dull, aching pain in the lumbar region, radiating to the right hip.",
+        "location": "lumbar region",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "5",
+        "is_active": "True",
+        "raw_data": "The patient presents with a dull, aching pain in the lumbar region, radiating to the right hip, and experiencing occasional numbness in the right leg."
+      },
+      "numbness in right leg": {
+        "description": "Occasional numbness in the right leg.",
+        "location": "right leg",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "The patient presents with a dull, aching pain in the lumbar region, radiating to the right hip, and experiencing occasional numbness in the right leg."
+      },
+      "physical activity limitation": {
+        "description": "Difficulty maintaining physical activity.",
+        "location": "-1",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "The patient notes worsening symptoms over the past two weeks, including difficulty maintaining physical activity."
+      }
+    }
+  }
+}

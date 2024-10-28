@@ -1,0 +1,50 @@
+{
+  "doctor_id": "0",
+  "patient_id": "2",
+  "date": "2024-10-28T16:08:56",
+  "doctor_note": "The patient returns with unrelenting pain rated at 10/10, radiating down the right leg to the foot, accompanied by constant numbness and weakness in the leg. Walking is severely compromised, and the patient reports falling twice in the past week due to leg instability. He is unable to perform routine activities and expresses concern about his ability to work. The patient has been taking gabapentin and naproxen without significant relief. Surgical consultation confirmed the need for discectomy. Surgery is scheduled, and patient advised to minimize physical activity until then.",
+  "diagnosis": {
+    "diagnosis": "herniated disk causing sciatica",
+    "reasoning": "Unrelenting pain radiating down the right leg to the foot, numbness and weakness in the leg, compromised walking, and falling, despite taking gabapentin and naproxen, confirmed need for discectomy."
+  },
+  "features": {
+    "symptoms": {
+      "right leg pain": {
+        "description": "unrelenting pain rated at 10/10, radiating down the right leg to the foot",
+        "location": "right leg",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "10",
+        "is_active": "True",
+        "raw_data": "The patient returns with unrelenting pain rated at 10/10, radiating down the right leg to the foot, accompanied by constant numbness and weakness in the leg."
+      },
+      "right leg numbness": {
+        "description": "constant numbness in the leg",
+        "location": "right leg",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "The patient returns with unrelenting pain rated at 10/10, radiating down the right leg to the foot, accompanied by constant numbness and weakness in the leg."
+      },
+      "right leg weakness": {
+        "description": "constant weakness in the leg",
+        "location": "right leg",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "The patient returns with unrelenting pain rated at 10/10, radiating down the right leg to the foot, accompanied by constant numbness and weakness in the leg."
+      },
+      "leg instability": {
+        "description": "leg instability causing falls",
+        "location": "right leg",
+        "duration": "-1",
+        "frequency": "-1",
+        "intensity": "-1",
+        "is_active": "True",
+        "raw_data": "Walking is severely compromised, and the patient reports falling twice in the past week due to leg instability."
+      }
+    }
+  }
+}

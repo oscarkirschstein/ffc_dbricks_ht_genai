@@ -10,28 +10,40 @@ from models.visualizations import consolidate_symptoms as consolidate_symptoms_m
 import io
 import re
 from PIL import Image
+import time
 
 # Global variables
+doctor_id = None
+patient_id = None
 json_files = []
 current_json_file = None
-consolidated_symptoms = pd.DataFrame()
-patient_id = None
-
-# Add this near the top of your script, with other global variables
+consolidated_symptoms_df = pd.DataFrame()
+# State for json_files
 json_files_state = gr.State([])
 
+
 # Function to load existing JSON files
-def load_existing_json_files(patient_id):
-    global json_files
+def load_existing_json_files():
+    global json_files, doctor_id, patient_id
     json_files = []
     doctor_notes_dir = 'data/doctor_notes/'
+    
+    # Ensure both doctor_id and patient_id are available
+    if not doctor_id or not patient_id:
+        print("Warning: doctor_id or patient_id is not set")
+        return json_files
+
     for filename in os.listdir(doctor_notes_dir):
         if filename.endswith('.json'):
-            match = re.search(r'doctor_note_\d{8}_\d{6}_(\d+)_\d+\.json', filename)
-            patient_id_from_filename = match.group(1) if match else None
-            if patient_id_from_filename == patient_id:
+            # Use regex to match the expected format: 'doctor_note_yyyymmdd_hhmmss_doctorid_patientid.json'
+            match = re.search(r'doctor_note_\d{8}_\d{6}_(\d+)_(\d+)\.json', filename)
+            if match and match.group(1) == doctor_id and match.group(2) == patient_id:
                 json_files.append(os.path.join(doctor_notes_dir, filename))
-    return json_files  # Return the json_files list
+    
+    # Sort files by creation time (most recent first)
+    json_files.sort(key=lambda x: os.path.getctime(x), reverse=True)
+    
+    return json_files
 
 # Function to reset the json_files list
 def reset_json_files():
@@ -40,12 +52,15 @@ def reset_json_files():
 
 # Login function to check username and password
 def login(username, password):
+    global doctor_id  # Add this line
     # Load user data from JSON file
     with open('data/users/users.json', 'r') as file:
         users = json.load(file)
     for user_id, user_info in users.items():
         if user_info['username'] == username and user_info['password'] == password:
             # Login successful, show home page
+            if user_info['role'] == 'doctor':  # Add this condition
+                doctor_id = user_id  # Store the doctor_id
             return gr.update(visible=False), gr.update(visible=True), gr.update(visible=False, value=""), f"Welcome {user_info['first_name']} {user_info['last_name']}! You are logged in as a {user_info['role']}."
     # Login failed
     return gr.update(visible=True), gr.update(visible=False), gr.update(visible=True, value="Incorrect username or password. Please try again."), ""
@@ -63,23 +78,22 @@ def update_patient_id(selected_patient_name):
     global patient_id
     if selected_patient_name == "Pick a patient":
         patient_id = None
-        reset_json_files()
         return (
             gr.update(open=True),
             "No patient selected",
             gr.update(visible=False),
             gr.update(visible=True),
-            gr.update(value=[])  # Update the State component instead of returning a list
+            gr.update(value=[])  # Update the State component
         )
     patients = load_patients()
     patient_id = patients.get(selected_patient_name)
-    json_files = load_existing_json_files(patient_id)
+    json_files = load_existing_json_files()
     return (
         gr.update(open=False),
         selected_patient_name,
         gr.update(visible=True),
         gr.update(visible=False),
-        gr.update(value=json_files)  # Update the State component instead of returning a list
+        gr.update(value=json_files)  # Update the State component
     )
 
 class CustomJSONEncoder(json.JSONEncoder):
@@ -90,18 +104,21 @@ class CustomJSONEncoder(json.JSONEncoder):
 
 # Create JSON files based on doctor's note and date
 def create_json_file(input_text, selected_date):
-    global json_files
+    global json_files, patient_id, doctor_id
     diagnosis = extract_diagnosis_model(input_text)
     features = extract_features_model(input_text)
 
+    current_time = datetime.now().strftime("%H:%M:%S")
+    formatted_date = selected_date.strftime("%Y-%m-%d") if isinstance(selected_date, datetime) else selected_date.split('T')[0]
     data = {
+        "doctor_id": doctor_id,
+        "patient_id": patient_id,
+        "date": f"{formatted_date}T{current_time}",
         "doctor_note": input_text,
         "diagnosis": diagnosis,
-        "features": features,
-        "date": selected_date.isoformat() if isinstance(selected_date, datetime) else selected_date
+        "features": features
     }
-    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"doctor_note_{current_time}.json"
+    filename = f"doctor_note_{formatted_date.replace('-', '')}_{current_time.replace(':', '')}_{doctor_id}_{patient_id}.json"
 
     doctor_notes_dir = 'data/doctor_notes/'
     os.makedirs(doctor_notes_dir, exist_ok=True)
@@ -130,17 +147,23 @@ def update_file_selector():
 
 def consolidate_symptoms():
     global json_files
-    global consolidated_symptoms
-    result, consolidated_symptoms = consolidate_symptoms_model(json_files)
-    return result, consolidated_symptoms
+    global consolidated_symptoms_df
+    result, consolidated_symptoms_df = consolidate_symptoms_model(json_files)
+    return result, consolidated_symptoms_df
 
 def visualize_symptoms():
-    global consolidated_symptoms
-    figures = visualize_symptoms_model(consolidated_symptoms)
+    global consolidated_symptoms_df
+    figures = visualize_symptoms_model(consolidated_symptoms_df)
     images = []
     for fig in figures:
-        img_bytes = fig.to_image(format="png")
-        img = Image.open(io.BytesIO(img_bytes))
+        # Convert Plotly figure to PIL Image directly
+        if hasattr(fig, 'to_image'):
+            # Handle Plotly figures
+            img_bytes = fig.to_image(format="png")
+            img = Image.open(io.BytesIO(img_bytes))
+        else:
+            # Handle PIL Images (from wordcloud)
+            img = fig
         images.append(img)
     return images
 
@@ -243,12 +266,12 @@ def update_symptom(original_name, name, location, duration, frequency, intensity
                 file.truncate()
             
             symptom_names = list(data['features']['symptoms'].keys())
-            return gr.update(visible=False), json.dumps(data, indent=2), gr.update(choices=symptom_names, value=name), gr.update(visible=True, value="Symptom updated successfully.")
+            return gr.update(visible=False), json.dumps(data, indent=2), gr.update(choices=symptom_names, value=name), gr.update(visible=True, value="Symptom updated successfully"), gr.update()
         except IOError:
-            return gr.update(visible=True, value=f"Update failed: Could not write to file {file_to_update}"), "{}", gr.update(), gr.update(visible=True, value="Update failed: IOError occurred.")
+            return gr.update(visible=True, value=f"Update failed: Could not write to file {file_to_update}"), "{}", gr.update(), gr.update(visible=True, value="Update failed: IOError occurred."), gr.update()
         except json.JSONDecodeError:
-            return gr.update(visible=True, value=f"Update failed: Invalid JSON in file {file_to_update}"), "{}", gr.update(), gr.update(visible=True, value="Update failed: JSONDecodeError occurred.")
-    return gr.update(visible=True, value="Update failed: No file selected"), "{}", gr.update(), gr.update(visible=True, value="Update failed: No file selected.")
+            return gr.update(visible=True, value=f"Update failed: Invalid JSON in file {file_to_update}"), "{}", gr.update(), gr.update(visible=True, value="Update failed: JSONDecodeError occurred."), gr.update()
+    return gr.update(visible=True, value="Update failed: No file selected"), "{}", gr.update(), gr.update(visible=True, value="Update failed: No file selected."), gr.update()
 
 def load_symptom(symptom_name, current_file, selected_file):
     file_to_load = current_file if current_file else selected_file
@@ -280,7 +303,10 @@ def reset_interface():
         gr.update(interactive=True, variant="primary"),  # Enable and make submit button green
         gr.update(visible=False),  # Hide "New doctor note" button
         gr.update(open=True),  # Expand the doctor's note accordion
-        gr.update(value=[], visible=False)  # Reset and hide symptoms
+        gr.update(value=[], visible=False),  # Reset and hide symptoms dropdown
+        gr.update(visible=False),  # Hide symptoms group
+        gr.update(open=False),  # Close diagnosis accordion
+        gr.update(open=False)   # Close symptoms accordion
     )
 
 def update_diagnosis(diagnosis, reasoning, current_file, selected_file):
@@ -294,12 +320,16 @@ def update_diagnosis(diagnosis, reasoning, current_file, selected_file):
                 file.seek(0)
                 json.dump(data, file, indent=2)
                 file.truncate()
-            return gr.update(visible=False), json.dumps(data, indent=2)  # Hide status, update JSON preview
+            return gr.update(visible=True, value="Diagnosis updated successfully"), json.dumps(data, indent=2), gr.update()  # Show status with success message
         except IOError:
-            return gr.update(visible=True, value=f"Update failed: Could not write to file {file_to_update}"), "{}"
+            return gr.update(visible=True, value=f"Update failed: Could not write to file {file_to_update}"), "{}", gr.update()
         except json.JSONDecodeError:
-            return gr.update(visible=True, value=f"Update failed: Invalid JSON in file {file_to_update}"), "{}"
-    return gr.update(visible=True, value="Update failed: No file selected"), "{}"  # Show status with error message
+            return gr.update(visible=True, value=f"Update failed: Invalid JSON in file {file_to_update}"), "{}", gr.update()
+    return gr.update(visible=True, value="Update failed: No file selected"), "{}", gr.update()  # Show status with error message
+
+def hide_status_after_delay():
+    time.sleep(1)  # Wait for 1 second
+    return gr.update(visible=False)
 
 def is_dataframe_up_to_date(df, json_files):
     if df is None or df.empty:
@@ -308,23 +338,120 @@ def is_dataframe_up_to_date(df, json_files):
     current_files = set(map(os.path.basename, json_files))
     return processed_files == current_files
 
-# Modify the on_analytics_tab_select function to accept json_files_state
-def on_analytics_tab_select(json_files_state):
-    global consolidated_symptoms_df  # Assuming this is a global variable
+def on_previous_visits_tab_select():
+    global json_files
+    return gr.Dropdown(choices=[os.path.basename(f) for f in json_files])
 
-    # Use the json_files_state directly, as it's now passed as an argument
-    if not is_dataframe_up_to_date(consolidated_symptoms_df, json_files_state):
-        result, consolidated_symptoms_df = consolidate_symptoms(json_files_state)
+def on_analytics_tab_select():
+    global json_files, consolidated_symptoms_df
+
+    # Data Consolidation
+    try:
+        if not is_dataframe_up_to_date(consolidated_symptoms_df, json_files):
+            result, consolidated_symptoms_df = consolidate_symptoms()
+        consolidation_json = result
+        consolidation_table = consolidated_symptoms_df
+    except Exception as e:
+        print(f"Error in data consolidation: {str(e)}")
+        consolidation_json = f"Error in data consolidation: {str(e)}"
+        consolidation_table = None
+
+    # Visualization
+    try:
+        if consolidated_symptoms_df is None or consolidated_symptoms_df.empty:
+            images = []
+        else:
+            images = visualize_symptoms()
+    except Exception as e:
+        print(f"Error in visualization: {str(e)}")
+        images = []
+
+    return consolidation_json, consolidation_table, images
+
+def update_diagnosis_with_delay(diagnosis, reasoning, current_file, selected_file):
+    file_to_update = current_file if current_file else selected_file
+    if file_to_update:
+        file_path = os.path.join('data/doctor_notes/', file_to_update)
+        try:
+            with open(file_path, 'r+') as file:
+                data = json.load(file)
+                data['diagnosis']['diagnosis'] = diagnosis
+                file.seek(0)
+                json.dump(data, file, indent=2)
+                file.truncate()
+            status = "Diagnosis updated successfully"
+            json_content = json.dumps(data, indent=2)
+        except IOError:
+            status = f"Update failed: Could not write to file {file_to_update}"
+            json_content = "{}"
+        except json.JSONDecodeError:
+            status = f"Update failed: Invalid JSON in file {file_to_update}"
+            json_content = "{}"
     else:
-        result = "Data is up to date. No consolidation needed."
+        status = "Update failed: No file selected"
+        json_content = "{}"
+    
+    # Return the results immediately
+    yield gr.update(value=status, visible=True), json_content, gr.update()
 
-    figures = visualize_symptoms(consolidated_symptoms_df)
-    images = []
-    for fig in figures:
-        img_bytes = fig.to_image(format="png")
-        img = Image.open(io.BytesIO(img_bytes))
-        images.append(img)
-    return result, consolidated_symptoms_df, images
+    # Sleep for 1 second
+    time.sleep(1)
+    
+    # Clear the status message
+    yield gr.update(value="", visible=False), json_content, gr.update()
+
+def update_symptom_with_delay(original_name, name, location, duration, frequency, intensity, is_active, current_file, selected_file):
+    file_to_update = current_file if current_file else selected_file
+    if file_to_update:
+        file_path = os.path.join('data/doctor_notes/', file_to_update)
+        try:
+            with open(file_path, 'r+') as file:
+                data = json.load(file)
+                symptoms = data['features']['symptoms']
+                
+                new_symptom_data = {
+                    'location': str(location),
+                    'duration': str(duration),
+                    'frequency': str(frequency),
+                    'intensity': str(intensity),
+                    'is_active': str(is_active).capitalize()
+                }
+                
+                if original_name == name:
+                    symptoms[name].update(new_symptom_data)
+                else:
+                    symptoms[name] = symptoms.pop(original_name)
+                    symptoms[name] = new_symptom_data
+                
+                file.seek(0)
+                json.dump(data, file, indent=2)
+                file.truncate()
+            
+            symptom_names = list(data['features']['symptoms'].keys())
+            status = "Symptom updated successfully"
+            json_content = json.dumps(data, indent=2)
+            new_symptom_value = name
+        except IOError:
+            status = f"Update failed: Could not write to file {file_to_update}"
+            json_content = "{}"
+            new_symptom_value = original_name
+        except json.JSONDecodeError:
+            status = f"Update failed: Invalid JSON in file {file_to_update}"
+            json_content = "{}"
+            new_symptom_value = original_name
+    else:
+        status = "Update failed: No file selected"
+        json_content = "{}"
+        new_symptom_value = original_name
+    
+    # Return the results immediately
+    yield gr.update(), json_content, gr.update(choices=symptom_names, value=new_symptom_value), gr.update(value=status, visible=True), gr.update()
+    
+    # Sleep for 1 second
+    time.sleep(1)
+    
+    # Clear the status message
+    yield gr.update(), json_content, gr.update(), gr.update(value="", visible=False), gr.update()
 
 # Gradio interface
 with gr.Blocks() as demo:
@@ -381,7 +508,7 @@ with gr.Blocks() as demo:
                             with gr.Accordion("Diagnosis Reasoning", open=False):
                                 reasoning_textbox = gr.Textbox(label="Reasoning", interactive=False)
                             
-                            update_status = gr.Textbox(label="Update Status", visible=False, interactive=False)
+                            diagnosis_update_status = gr.Textbox(label="Diagnosis Update Status", visible=False, interactive=False)
                     
                     with gr.Accordion("Symptoms", open=True) as symptoms_accordion:
                         with gr.Column(visible=False) as symptoms_component:
@@ -394,8 +521,9 @@ with gr.Blocks() as demo:
                                 symptom_intensity = gr.Slider(label="Intensity", minimum=0, maximum=10, step=1)
                                 symptom_is_active = gr.Checkbox(label="Is Active")
                             symptom_update_btn = gr.Button("Update Symptom")
+                            symptom_update_status = gr.Textbox(label="Symptom Update Status", visible=False, interactive=False)
                     
-                with gr.TabItem("Previous visits"):
+                with gr.TabItem("Previous visits") as previous_visits_tab:
                     file_selector = gr.Dropdown(label="Select file to preview", choices=[], interactive=True)
                     json_preview = gr.JSON(label="JSON Preview")
                     
@@ -432,30 +560,40 @@ with gr.Blocks() as demo:
         new_note_btn.click(
             fn=reset_interface,
             inputs=[],
-            outputs=[current_file, input_text, diagnosis_component, submit_btn, new_note_btn, note_accordion, symptom_dropdown,
-                    gr.Group([symptom_name, symptom_location, symptom_duration, symptom_frequency, symptom_intensity, symptom_is_active])]
+            outputs=[
+                current_file, input_text, diagnosis_component, submit_btn, new_note_btn, 
+                note_accordion, symptom_dropdown,
+                gr.Group([symptom_name, symptom_location, symptom_duration, symptom_frequency, symptom_intensity, symptom_is_active]),
+                diagnosis_accordion,
+                symptoms_accordion
+            ]
         )
 
         diagnosis_update_btn.click(
-            fn=update_diagnosis,
+            fn=update_diagnosis_with_delay,
             inputs=[diagnosis_textbox, reasoning_textbox, current_file, file_selector],
-            outputs=[update_status, json_preview]
+            outputs=[diagnosis_update_status, json_preview, diagnosis_update_status]
         )
 
         symptom_update_btn.click(
-            fn=update_symptom,
+            fn=update_symptom_with_delay,
             inputs=[
                 symptom_dropdown,  # Pass the original name from the dropdown
                 symptom_name, symptom_location, symptom_duration, symptom_frequency, symptom_intensity, symptom_is_active,
                 current_file, file_selector
             ],
-            outputs=[update_status, json_preview, symptom_dropdown, update_status]
+            outputs=[diagnosis_update_status, json_preview, symptom_dropdown, symptom_update_status, symptom_update_status]
         )
 
-        # Modify the Analytics tab select event
+        previous_visits_tab.select(
+            fn=on_previous_visits_tab_select,
+            inputs=[],
+            outputs=[file_selector]
+        )
+
         analytics_tab.select(
             fn=on_analytics_tab_select,
-            inputs=json_files_state,  # Pass the State component directly
+            inputs=[],
             outputs=[consolidation_preview_json, consolidation_preview_table, visualization_gallery]
         )
 
