@@ -1,0 +1,541 @@
+2024-10-29 15:10:55,298 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:10:55,946 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:10:57,253 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:10:57,254 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 15:11:03,673 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:03,943 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:03,944 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 15:11:06,511 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:06,516 - ERROR - Failed to parse LLM response for note: A 72-year-old female with severe COPD is experiencing an increased frequency of exacerbations. She i...
+2024-10-29 15:11:07,801 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:07,802 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 15:11:14,653 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:14,914 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:14,915 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 15:11:20,695 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:21,971 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:21,972 - INFO - Retrying request to /openai/v1/chat/completions in 3.000000 seconds
+2024-10-29 15:11:25,935 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:26,184 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:26,185 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 15:11:27,758 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:29,037 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:29,038 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 15:11:35,543 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:35,788 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:35,789 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 15:11:37,692 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:37,696 - ERROR - Failed to parse LLM response for note: A 34-year-old female is stung by a bee and experiences immediate swelling, itching, and redness at t...
+2024-10-29 15:11:38,981 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:38,983 - INFO - Retrying request to /openai/v1/chat/completions in 8.000000 seconds
+2024-10-29 15:11:47,436 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:47,682 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:47,683 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 15:11:49,371 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:50,656 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:50,657 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 15:11:58,221 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:11:58,476 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:11:58,477 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 15:12:00,030 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:00,034 - ERROR - Failed to parse LLM response for note: A 65-year-old female with a known history of gout presents with increasing fatigue and lower back pa...
+2024-10-29 15:12:01,320 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:01,321 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 15:12:08,821 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:09,081 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:09,082 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 15:12:12,203 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:13,531 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:13,532 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 15:12:20,188 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:20,438 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:20,439 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 15:12:22,236 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:23,513 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:23,514 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 15:12:31,249 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:31,485 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:31,490 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 15:12:32,987 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:34,263 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:34,264 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 15:12:41,794 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:42,052 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:42,053 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 15:12:45,276 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:46,552 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:46,554 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 15:12:53,162 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:53,416 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:53,417 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 15:12:55,311 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:12:56,590 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:12:56,591 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 15:13:04,096 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:13:04,454 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:13:04,455 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 15:13:06,358 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:13:07,645 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 15:13:07,645 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 15:29:50,680 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:29:51,340 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:29:51,343 - ERROR - Failed to parse LLM response for note: A 3-year-old boy presents with a painful, swollen right arm. His mother reports he fell from a play ...
+2024-10-29 15:29:52,897 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:29:53,491 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:29:55,689 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:29:56,187 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:29:57,918 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:29:58,471 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:29:59,933 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:30:01,279 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:30:01,282 - ERROR - Failed to parse LLM response for note: A 25-year-old male presents with sharp, severe pain in his right testicle that began suddenly a few ...
+2024-10-29 15:32:41,659 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:32:42,297 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:32:43,799 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:32:44,544 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:32:44,546 - ERROR - Failed to parse LLM response for note: A 32-year-old male presents with a recurrent rash on his fingers characterized by grouped vesicles o...
+2024-10-29 15:32:46,044 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:32:46,625 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:32:48,088 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:32:48,643 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:32:46,460 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:32:46,933 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:38:03,342 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:38:04,108 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:38:04,110 - ERROR - Failed to parse LLM response for note: A 35-year-old woman presents with redness, itching, and a burning sensation under her breasts. Exami...
+2024-10-29 15:38:05,738 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:38:06,365 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:38:07,849 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:38:08,478 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 15:38:08,481 - ERROR - Failed to parse LLM response for note: A 30-year-old female with HIV infection presents with a non-productive cough, fever, and shortness o...
+2024-10-29 17:50:26,209 - INFO - Retrying request to /openai/v1/chat/completions in 0.954106 seconds
+2024-10-29 17:50:27,684 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 17:50:28,463 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 17:50:29,919 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 17:50:30,583 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 17:50:30,584 - ERROR - Failed to parse LLM response for note: A 30-year-old female presents with a recurrent pattern of increased sleepiness, increased appetite f...
+2024-10-29 19:24:02,823 - INFO - Retrying request to /openai/v1/chat/completions in 0.828855 seconds
+2024-10-29 19:24:04,424 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:05,089 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:06,590 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:07,163 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:07,164 - ERROR - Failed to parse LLM response for note: A 45-year-old male with a history of hepatitis C infection presents with numbness in his legs and di...
+2024-10-29 19:24:08,668 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:09,185 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:10,816 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:11,317 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:12,801 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:13,374 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:14,898 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:15,420 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:16,916 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:17,104 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:24:17,105 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:24:19,042 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:20,313 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:24:20,314 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:24:26,790 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:27,040 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:24:27,041 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:24:28,831 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:30,102 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:24:30,103 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:24:37,583 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:37,903 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:24:37,904 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:24:39,572 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:40,857 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:24:40,858 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:24:48,282 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:48,543 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:24:48,544 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:24:50,071 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:51,471 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:24:51,476 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:24:59,042 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:24:59,286 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:24:59,287 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:25:00,862 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:02,148 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:02,149 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:25:09,587 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:09,844 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:09,845 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:25:12,463 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:13,739 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:13,742 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:25:20,322 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:20,578 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:20,579 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:25:23,268 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:24,649 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:24,650 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:25:32,167 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:32,422 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:32,423 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:25:34,171 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:35,445 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:35,467 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:25:42,949 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:43,186 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:43,188 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:25:44,821 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:46,093 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:46,094 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:25:53,629 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:53,883 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:53,885 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:25:55,473 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:25:55,475 - ERROR - Failed to parse LLM response for note: A 28-year-old pregnant woman tests positive for Zika virus. She is concerned about the risk to her b...
+2024-10-29 19:25:56,761 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:25:56,766 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:26:04,372 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:04,622 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:04,622 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:26:06,224 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:06,227 - ERROR - Failed to parse LLM response for note: A 60-year-old male presents with a four-week history of epigastric pain that seems to get better wit...
+2024-10-29 19:26:07,498 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:07,499 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:26:15,009 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:15,266 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:15,267 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:26:16,791 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:18,100 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:18,106 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:26:25,680 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:25,919 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:25,919 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:26:27,362 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:28,648 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:28,648 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:26:36,228 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:36,462 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:36,463 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:26:38,063 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:38,066 - ERROR - Failed to parse LLM response for note: A 45-year-old male complains of fatigue and loss of appetite. He also reports a recent onset of exce...
+2024-10-29 19:26:39,331 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:39,336 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:26:46,878 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:47,144 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:47,145 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:26:48,770 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:50,063 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:50,064 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:26:57,630 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:57,878 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:26:57,879 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:26:59,472 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:26:59,476 - ERROR - Failed to parse LLM response for note: A 60-year-old man presents with worsening fatigue, pallor, and dizziness. He was initially suspected...
+2024-10-29 19:27:00,759 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:00,764 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:27:08,279 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:08,569 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:08,570 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:27:10,225 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:11,498 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:11,498 - INFO - Retrying request to /openai/v1/chat/completions in 8.000000 seconds
+2024-10-29 19:27:20,055 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:20,307 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:20,309 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:27:21,898 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:23,182 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:23,187 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:27:29,784 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:30,040 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:30,041 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:27:31,625 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:32,924 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:32,925 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:27:40,419 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:40,671 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:40,672 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:27:42,233 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:43,526 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:43,531 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:27:51,040 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:51,388 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:51,389 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:27:54,154 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:27:55,445 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:27:55,446 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:28:02,927 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:03,202 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:03,203 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:28:04,802 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:06,065 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:06,070 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:28:12,587 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:12,829 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:12,830 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:28:15,452 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:15,456 - ERROR - Failed to parse LLM response for note: A 65-year-old woman with Alzheimer's disease has lost significant weight over the last few months be...
+2024-10-29 19:28:16,746 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:16,747 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:28:23,337 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:23,598 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:23,600 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:28:26,307 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:27,610 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:27,615 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:28:34,194 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:34,453 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:34,454 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:28:36,045 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:37,317 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:37,318 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:28:44,843 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:45,120 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:45,121 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:28:46,685 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:47,994 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:47,999 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:28:55,463 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:55,722 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:55,723 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:28:57,540 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:28:58,828 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:28:58,829 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:29:05,239 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:05,502 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:05,503 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:29:06,971 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:06,974 - ERROR - Failed to parse LLM response for note: How do I fix the transmission in my car?...
+2024-10-29 19:29:08,255 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:08,260 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:29:15,766 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:16,019 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:16,020 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:29:18,634 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:18,637 - ERROR - Failed to parse LLM response for note: A 5-year-old boy with a history of eczema is now covered with a widespread chickenpox rash. His pare...
+2024-10-29 19:29:19,924 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:19,925 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:29:27,443 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:27,697 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:27,698 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:29:29,283 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:30,563 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:30,568 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:29:38,030 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:38,275 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:38,276 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:29:40,903 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:40,905 - ERROR - Failed to parse LLM response for note: A 12-year-old girl has been having difficulty focusing on her schoolwork. She often misplaces her bo...
+2024-10-29 19:29:42,179 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:42,181 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:29:48,843 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:49,251 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:49,253 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:29:50,853 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:50,857 - ERROR - Failed to parse LLM response for note: A 60-year-old male presents with claims of "turning into a werewolf" during a full moon. He states t...
+2024-10-29 19:29:52,150 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:52,178 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:29:59,697 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:29:59,969 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:29:59,970 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:30:01,642 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:01,645 - ERROR - Failed to parse LLM response for note: A 55-year-old male smoker with a history of chronic obstructive pulmonary disease (COPD) presents wi...
+2024-10-29 19:30:02,930 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:02,932 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:30:10,452 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:10,699 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:10,700 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:30:12,394 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:13,674 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:13,721 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:30:21,946 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:23,628 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:23,630 - ERROR - Failed to parse LLM response for note: A 50-year-old woman presents with jaundice, pruritus, and dark urine. She is initially thought to ha...
+2024-10-29 19:30:24,990 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:24,991 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:30:32,670 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:32,933 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:32,934 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:30:34,410 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:35,699 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:35,700 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:30:42,613 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:42,861 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:42,862 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:30:44,547 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:45,838 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:45,839 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:30:52,319 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:52,562 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:52,563 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:30:55,299 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:30:55,304 - ERROR - Failed to parse LLM response for note: A 50-year-old male with rheumatoid arthritis presents with a new-onset severe headache and scalp ten...
+2024-10-29 19:30:56,588 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:30:56,588 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:31:04,107 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:04,359 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:04,360 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:31:06,011 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:07,288 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:07,289 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:31:14,989 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:15,232 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:15,233 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:31:16,877 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:18,209 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:18,210 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:31:24,688 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:24,921 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:24,922 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:31:26,492 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:26,495 - ERROR - Failed to parse LLM response for note: A 45-year-old woman fell onto her outstretched hand while jogging. She now has pain and swelling in ...
+2024-10-29 19:31:27,774 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:27,775 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:31:35,215 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:35,485 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:35,486 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:31:38,000 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:39,436 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:39,437 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:31:45,945 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:46,168 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:46,169 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:31:50,006 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:51,291 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:51,292 - INFO - Retrying request to /openai/v1/chat/completions in 4.000000 seconds
+2024-10-29 19:31:55,763 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:56,424 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:31:57,763 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:31:57,764 - INFO - Retrying request to /openai/v1/chat/completions in 8.000000 seconds
+2024-10-29 19:32:06,264 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:06,522 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:06,523 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:32:08,109 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:09,363 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:09,364 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:32:16,791 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:17,119 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:17,119 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:32:18,694 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:18,697 - ERROR - Failed to parse LLM response for note: A 50-year-old woman presents with painful, visible veins on her legs. She states she has been standi...
+2024-10-29 19:32:19,985 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:19,986 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:32:27,450 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:27,705 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:27,706 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:32:29,243 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:30,533 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:30,535 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:32:38,008 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:38,256 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:38,257 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:32:40,813 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:40,814 - ERROR - Failed to parse LLM response for note: A 60-year-old female patient complains of loose teeth and bad breath that won't go away. On examinat...
+2024-10-29 19:32:42,078 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:42,079 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:32:48,659 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:48,921 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:48,922 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:32:50,707 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:32:50,711 - ERROR - Failed to parse LLM response for note: A 38-year-old male with a known history of hay fever presents with recurrent sore throat and hoarsen...
+2024-10-29 19:32:51,984 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:32:51,985 - INFO - Retrying request to /openai/v1/chat/completions in 8.000000 seconds
+2024-10-29 19:33:00,536 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:00,786 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:00,787 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:33:02,401 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:03,680 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:03,681 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:33:11,186 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:11,427 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:11,428 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:33:13,929 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:15,208 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:15,209 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:33:21,732 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:22,411 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:22,412 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:33:23,940 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:25,224 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:25,225 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:33:32,665 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:32,917 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:32,919 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:33:34,381 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:35,653 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:35,654 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:33:43,238 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:43,482 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:43,483 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:33:45,079 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:46,377 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:46,378 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:33:53,990 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:54,232 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:54,233 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:33:56,856 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:33:58,186 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:33:58,187 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:34:06,037 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:06,289 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:06,290 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:34:07,793 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:07,796 - ERROR - Failed to parse LLM response for note: A 30-year-old woman comes to the clinic with recurrent abdominal pain for the past 6 months. She not...
+2024-10-29 19:34:09,088 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:09,089 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:34:16,615 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:16,872 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:16,873 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:34:18,666 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:18,670 - ERROR - Failed to parse LLM response for note: A 55-year-old male with a known history of high cholesterol presents with sudden, severe chest pain ...
+2024-10-29 19:34:19,973 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:19,973 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:34:27,475 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:27,731 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:27,732 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:34:30,330 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:30,332 - ERROR - Failed to parse LLM response for note: A 20-year-old female with a known diagnosis of asthma presents with sudden worsening of her symptoms...
+2024-10-29 19:34:31,621 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:31,622 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:34:39,456 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:39,699 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:39,699 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:34:41,301 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:43,038 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:43,039 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:34:49,489 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:49,759 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:49,760 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:34:51,331 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:34:52,663 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:34:52,665 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:35:00,246 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:00,507 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:00,508 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:35:02,186 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:03,462 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:03,463 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:35:09,969 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:10,222 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:10,222 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:35:12,841 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:12,844 - ERROR - Failed to parse LLM response for note: A 35-year-old woman presents with swollen, painful joints. She recently had a throat infection which...
+2024-10-29 19:35:14,111 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:14,112 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:35:20,716 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:20,956 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:20,956 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:35:23,690 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:23,693 - ERROR - Failed to parse LLM response for note: A 70-year-old male presents with acute severe lower back pain following a fall. He is unable to move...
+2024-10-29 19:35:24,965 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:24,965 - INFO - Retrying request to /openai/v1/chat/completions in 6.000000 seconds
+2024-10-29 19:35:31,577 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:31,824 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:31,824 - INFO - Retrying request to /openai/v1/chat/completions in 2.000000 seconds
+2024-10-29 19:35:34,546 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:35,812 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:35,812 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:35:43,353 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:43,593 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:43,594 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:35:45,092 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:46,376 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:46,377 - INFO - Retrying request to /openai/v1/chat/completions in 7.000000 seconds
+2024-10-29 19:35:53,903 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-29 19:35:54,158 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-10-29 19:35:54,159 - INFO - Retrying request to /openai/v1/chat/completions in 1.000000 seconds
+2024-10-29 19:35:55,819 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
