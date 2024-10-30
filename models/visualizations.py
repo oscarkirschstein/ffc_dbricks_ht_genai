@@ -124,8 +124,6 @@ def consolidate_symptoms(doctor_note_files):
                     "diagnosis": diagnosis,
                     "date": doctor_note["date"],
                     "location": symptom_data["location"],
-                    "duration": symptom_data["duration"],
-                    "frequency": symptom_data["frequency"],
                     "intensity": symptom_data["intensity"],
                     "is_active": symptom_data["is_active"],
                     "raw_data": symptom_data["raw_data"]
@@ -155,7 +153,7 @@ def visualize_symptoms(df):
     figures = []
     
     if not df.empty:
-        figures_functions = [symptom_distribution, symptom_intensity, symptom_duration, active_symptoms, symptom_wordcloud]
+        figures_functions = [symptom_distribution, symptom_intensity, active_symptoms, symptom_wordcloud]
         for func in figures_functions:
             figures.append(func(df))
         return figures
@@ -179,16 +177,6 @@ def symptom_intensity(df):
         title="Symptom Intensity Over Time",
         xaxis_title="Date",
         yaxis_title="Intensity"
-    )
-    return fig
-
-
-def symptom_duration(df):
-    fig = px.bar(df, x="symptom_name", y="duration", color="symptom", barmode="group")
-    fig.update_layout(
-        title="Symptom Duration",
-        xaxis_title="Symptom",
-        yaxis_title="Duration (days)"
     )
     return fig
 

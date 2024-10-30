@@ -180,8 +180,6 @@ def extract_symptoms(text):
         symptom = {
             "name": symptom_name,
             "location": symptom_data.get('location', ''),
-            "duration": symptom_data.get('duration', ''),
-            "frequency": symptom_data.get('frequency', ''),
             "intensity": int(symptom_data['intensity']) if symptom_data['intensity'] != '-1' else 0,
             "is_active": bool(symptom_data.get('is_active', False))
         }
@@ -216,8 +214,6 @@ def submit_note(input_text, selected_date):
             gr.update(choices=symptom_names, value=symptom_names[0] if symptom_names else None, visible=True),
             gr.update(value=first_symptom.get('name', '')),
             gr.update(value=first_symptom.get('location', '')),
-            gr.update(value=first_symptom.get('duration', '')),
-            gr.update(value=first_symptom.get('frequency', '')),
             gr.update(value=first_symptom.get('intensity', 0)),
             gr.update(value=first_symptom.get('is_active', False)),
             gr.update(visible=True)  # Show symptoms_component
@@ -236,7 +232,7 @@ def submit_note(input_text, selected_date):
         gr.update(visible=False)  # Hide symptoms_component
     )
 
-def update_symptom(original_name, name, location, duration, frequency, intensity, is_active, current_file, selected_file):
+def update_symptom(original_name, name, location, intensity, is_active, current_file, selected_file):
     file_to_update = current_file if current_file else selected_file
     if file_to_update:
         file_path = os.path.join('data/doctor_notes/', file_to_update)
@@ -247,8 +243,6 @@ def update_symptom(original_name, name, location, duration, frequency, intensity
                 
                 new_symptom_data = {
                     'location': str(location),
-                    'duration': str(duration),
-                    'frequency': str(frequency),
                     'intensity': str(intensity),
                     'is_active': str(is_active).capitalize()
                 }
@@ -284,8 +278,6 @@ def load_symptom(symptom_name, current_file, selected_file):
             return (
                 symptom_name,
                 symptom_data.get('location', ''),
-                symptom_data.get('duration', ''),
-                symptom_data.get('frequency', ''),
                 int(symptom_data.get('intensity', '0')),
                 bool(symptom_data.get('is_active', False))
             )
@@ -293,7 +285,7 @@ def load_symptom(symptom_name, current_file, selected_file):
             pass
         except json.JSONDecodeError:
             pass
-    return '', '', '', '', 0, False
+    return '', '', 0, False
 
 def reset_interface():
     return (
@@ -400,7 +392,7 @@ def update_diagnosis_with_delay(diagnosis, reasoning, current_file, selected_fil
     # Clear the status message
     yield gr.update(value="", visible=False), json_content, gr.update()
 
-def update_symptom_with_delay(original_name, name, location, duration, frequency, intensity, is_active, current_file, selected_file):
+def update_symptom_with_delay(original_name, name, location, intensity, is_active, current_file, selected_file):
     file_to_update = current_file if current_file else selected_file
     if file_to_update:
         file_path = os.path.join('data/doctor_notes/', file_to_update)
@@ -411,8 +403,6 @@ def update_symptom_with_delay(original_name, name, location, duration, frequency
                 
                 new_symptom_data = {
                     'location': str(location),
-                    'duration': str(duration),
-                    'frequency': str(frequency),
                     'intensity': str(intensity),
                     'is_active': str(is_active).capitalize()
                 }
@@ -516,8 +506,6 @@ with gr.Blocks() as demo:
                             with gr.Group():
                                 symptom_name = gr.Textbox(label="Symptom Name")
                                 symptom_location = gr.Textbox(label="Location")
-                                symptom_duration = gr.Textbox(label="Duration")
-                                symptom_frequency = gr.Textbox(label="Frequency")
                                 symptom_intensity = gr.Slider(label="Intensity", minimum=0, maximum=10, step=1)
                                 symptom_is_active = gr.Checkbox(label="Is Active")
                             symptom_update_btn = gr.Button("Update Symptom")
@@ -551,8 +539,7 @@ with gr.Blocks() as demo:
             outputs=[
                 note_accordion, diagnosis_textbox, reasoning_textbox, diagnosis_component, 
                 json_preview, current_file, submit_btn, new_note_btn, symptom_dropdown,
-                symptom_name, symptom_location, symptom_duration, symptom_frequency, 
-                symptom_intensity, symptom_is_active,
+                symptom_name, symptom_location, symptom_intensity, symptom_is_active,
                 symptoms_component
             ]
         ).then(fn=update_file_selector, outputs=file_selector)
@@ -563,7 +550,7 @@ with gr.Blocks() as demo:
             outputs=[
                 current_file, input_text, diagnosis_component, submit_btn, new_note_btn, 
                 note_accordion, symptom_dropdown,
-                gr.Group([symptom_name, symptom_location, symptom_duration, symptom_frequency, symptom_intensity, symptom_is_active]),
+                gr.Group([symptom_name, symptom_location, symptom_intensity, symptom_is_active]),
                 diagnosis_accordion,
                 symptoms_accordion
             ]
@@ -578,8 +565,8 @@ with gr.Blocks() as demo:
         symptom_update_btn.click(
             fn=update_symptom_with_delay,
             inputs=[
-                symptom_dropdown,  # Pass the original name from the dropdown
-                symptom_name, symptom_location, symptom_duration, symptom_frequency, symptom_intensity, symptom_is_active,
+                symptom_dropdown,
+                symptom_name, symptom_location, symptom_intensity, symptom_is_active,
                 current_file, file_selector
             ],
             outputs=[diagnosis_update_status, json_preview, symptom_dropdown, symptom_update_status, symptom_update_status]
@@ -618,7 +605,7 @@ with gr.Blocks() as demo:
     symptom_dropdown.change(
         fn=load_symptom,
         inputs=[symptom_dropdown, current_file, file_selector],
-        outputs=[symptom_name, symptom_location, symptom_duration, symptom_frequency, symptom_intensity, symptom_is_active]
+        outputs=[symptom_name, symptom_location, symptom_intensity, symptom_is_active]
     )
 
 demo.launch()
