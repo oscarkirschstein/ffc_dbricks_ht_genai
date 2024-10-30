@@ -315,9 +315,6 @@ def is_dataframe_up_to_date(df, json_files):
         return False
     processed_files = set(df['doctor_note_file'].unique())
     current_files = set(map(os.path.basename, json_files))
-    print(processed_files)
-    print(current_files)
-    print(processed_files == current_files)
     return processed_files == current_files
 
 def on_previous_visits_tab_select():
@@ -331,16 +328,16 @@ def on_analytics_tab_select():
     try:
         if not is_dataframe_up_to_date(consolidated_symptoms_df, json_files):
             consolidated_json, consolidated_symptoms_df = consolidate_symptoms()
-        consolidation_json = consolidated_json
+        consolidation_fmt = consolidated_json
         consolidation_table = consolidated_symptoms_df
     except Exception as e:
         print(f"Error in data consolidation: {str(e)}")
-        consolidation_json = f"Error in data consolidation: {str(e)}"
+        consolidation_fmt = f"Error in data consolidation: {str(e)}"
         consolidation_table = None
 
     # Visualization
     try:
-        if consolidated_symptoms_df is None or consolidated_symptoms_df.empty:
+        if consolidation_table is None or consolidation_table.empty:
             plot = None
         else:
             plot = visualize_symptoms()
@@ -348,7 +345,7 @@ def on_analytics_tab_select():
         print(f"Error in visualization: {str(e)}")
         plot = None
 
-    return consolidation_json, consolidation_table, plot
+    return consolidation_fmt, consolidation_table, plot
 
 def update_diagnosis_with_delay(diagnosis, reasoning, current_file, selected_file):
     file_to_update = current_file if current_file else selected_file
