@@ -4,6 +4,7 @@ import tempfile
 import os
 from datetime import datetime
 from models.features import extract_features
+from models.report_generator import generate_report
 
 # List to store the paths of created JSON files
 json_files = []
@@ -58,49 +59,112 @@ def preview_json(selected_file):
 
 
 def update_dropdown():
-    return gr.Dropdown(choices=[os.path.basename(f) for f in json_files])
+    choices = [os.path.basename(f) for f in json_files]
+    return [
+        gr.Dropdown(choices=choices),  # For the first tab
+        gr.Dropdown(choices=choices),  # For the report tab
+    ]
 
 
 if __name__ == "__main__":
     with gr.Blocks() as demo:
-        gr.Markdown("# Doctor's Note to JSON")
-        gr.Markdown(
-            "Enter a doctor's note to create a JSON file. Each submission adds a new file."
-        )
+        with gr.Tab("Doctor's Note"):
+            gr.Markdown("# Doctor's Note to JSON")
+            gr.Markdown(
+                "Enter a doctor's note to create a JSON file. Each submission adds a new file."
+            )
 
-        input_text = gr.Textbox(
-            label="Enter doctor's note",
-        )
+            input_text = gr.Textbox(
+                label="Enter doctor's note",
+            )
 
-        output_files = gr.File(
-            label="JSON Output", file_count="multiple"
-        )  # List JSON files generated up until now
-        file_selector = gr.Dropdown(
-            label="Select file to preview", choices=[], interactive=True
-        )
-        json_preview = gr.JSON(label="JSON Preview")
+            output_files = gr.File(label="JSON Output", file_count="multiple")
+            file_selector = gr.Dropdown(
+                label="Select file to preview", choices=[], interactive=True
+            )
+            json_preview = gr.JSON(label="JSON Preview")
 
-        submit_btn = gr.Button("Submit")
-        submit_btn.click(
-            fn=create_json_file, inputs=input_text, outputs=[output_files, json_preview]
-        ).then(fn=update_dropdown, outputs=file_selector)
-        # Enable Enter key press to submit
-        input_text.submit(
-            fn=create_json_file, inputs=input_text, outputs=[output_files, json_preview]
-        ).then(fn=update_dropdown, outputs=file_selector)
+            submit_btn = gr.Button("Submit")
+            submit_btn.click(
+                fn=create_json_file,
+                inputs=input_text,
+                outputs=[output_files, json_preview],
+            ).then(fn=update_dropdown, outputs=file_selector)
 
-        file_selector.change(
-            fn=preview_json, inputs=file_selector, outputs=json_preview
-        )
+            input_text.submit(
+                fn=create_json_file,
+                inputs=input_text,
+                outputs=[output_files, json_preview],
+            ).then(fn=update_dropdown, outputs=file_selector)
 
-        clear_btn = gr.Button("Clear All")
-        clear_btn.click(
-            fn=clear_files, inputs=None, outputs=[output_files, json_preview]
-        ).then(fn=update_dropdown, outputs=file_selector)
+            file_selector.change(
+                fn=preview_json, inputs=file_selector, outputs=json_preview
+            )
+
+            clear_btn = gr.Button("Clear All")
+            clear_btn.click(
+                fn=clear_files, inputs=None, outputs=[output_files, json_preview]
+            ).then(fn=update_dropdown, outputs=file_selector)
+
+        with gr.Tab("Patient Report"):
+            gr.Markdown("# Patient Health Report")
+            gr.Markdown(
+                "View a visual report of the patient's symptoms based on the latest doctor's note."
+            )
+
+            patient_id = gr.Number(
+                label="Patient ID",
+                value=1,
+                precision=0,
+            )
+
+            # Add file selector for the report tab
+            report_file_selector = gr.Dropdown(
+                label="Select note to generate report from",
+                choices=[],
+                interactive=True,
+            )
+
+            # Add plotly figure output
+            report_plot = gr.Plot(label="Symptom Timeline")
+
+            generate_btn = gr.Button("Generate Report")
+
+            def generate_report_from_file(selected_file):
+                if not selected_file:
+                    return None
+
+                full_path = next(
+                    (f for f in json_files if os.path.basename(f) == selected_file),
+                    None,
+                )
+                if full_path:
+                    with open(full_path, "r") as file:
+                        features_data = json.load(file)
+                    return generate_report(
+                        1, features_data
+                    )  # Patient ID hardcoded for now
+                return None
+
+            generate_btn.click(
+                fn=generate_report_from_file,
+                inputs=[report_file_selector],
+                outputs=[report_plot],
+            )
+
+            # Update both file selectors when new files are added
+            submit_btn.click(
+                fn=create_json_file,
+                inputs=input_text,
+                outputs=[output_files, json_preview],
+            ).then(
+                fn=update_dropdown,
+                outputs=[file_selector, report_file_selector],  # Update both dropdowns
+            )
 
         demo.load(fn=clear_files, outputs=[output_files, json_preview]).then(
-            fn=update_dropdown, outputs=file_selector
+            fn=update_dropdown,
+            outputs=[file_selector, report_file_selector],  # Update both dropdowns
         )
 
-    if __name__ == "__main__":
-        demo.launch()
+    demo.launch()
