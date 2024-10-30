@@ -1435,6 +1435,23 @@ rtd = ["jupyter_sphinx", "mdit-py-plugins", "myst-parser", "pyyaml", "sphinx", "
 testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
 [[package]]
+name = "markdown2"
+version = "2.5.1"
+description = "A fast and complete Python implementation of Markdown"
+optional = false
+python-versions = "<4,>=3.8"
+files = [
+    {file = "markdown2-2.5.1-py2.py3-none-any.whl", hash = "sha256:190ae60a4bd0425c60c863bede18a9f3d45b1cbf3fbc9f40b4fac336ff2c520b"},
+    {file = "markdown2-2.5.1.tar.gz", hash = "sha256:12fc04ea5a87f7bb4b65acf5bf3af1183b20838cc7d543b74c92ec7eea4bbc74"},
+]
+
+[package.extras]
+all = ["latex2mathml", "pygments (>=2.7.3)", "wavedrom"]
+code-syntax-highlighting = ["pygments (>=2.7.3)"]
+latex = ["latex2mathml"]
+wavedrom = ["wavedrom"]
+
+[[package]]
 name = "markupsafe"
 version = "2.1.5"
 description = "Safely add untrusted strings to HTML/XML markup."
@@ -1962,6 +1979,18 @@ files = [
 [package.extras]
 qa = ["flake8 (==5.0.4)", "mypy (==0.971)", "types-setuptools (==67.2.0.1)"]
 testing = ["docopt", "pytest"]
+
+[[package]]
+name = "pdfkit"
+version = "1.0.0"
+description = "Wkhtmltopdf python wrapper to convert html to pdf using the webkit rendering engine and qt"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pdfkit-1.0.0-py2-none-any.whl", hash = "sha256:cc122e5aed594198ff7aaa566f2950d2163763576ab891c161bb1f6c630f5a8e"},
+    {file = "pdfkit-1.0.0-py3-none-any.whl", hash = "sha256:a7a4ca0d978e44fa8310c4909f087052430a6e8e0b1dd7ceef657f139789f96f"},
+    {file = "pdfkit-1.0.0.tar.gz", hash = "sha256:992f821e1e18fc8a0e701ecae24b51a2d598296a180caee0a24c0af181da02a9"},
+]
 
 [[package]]
 name = "pexpect"
@@ -3464,4 +3493,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "d6fe1e713cdcc7567051be6eaa34aa07510490b5666029841357f06a6d8cccb0"
+content-hash = "e1937657f75acc79d20ab472da29e9a50989fa7c43879ba7426cab86a0c8f992"

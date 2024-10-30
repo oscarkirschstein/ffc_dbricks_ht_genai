@@ -4,7 +4,7 @@ import tempfile
 import os
 from datetime import datetime
 from models.features import extract_features
-from models.report_generator import generate_report
+from models.report_generator import generate_report, generate_pdf_report
 
 # List to store the paths of created JSON files
 json_files = []
@@ -59,15 +59,73 @@ def preview_json(selected_file):
 
 
 def update_dropdown():
-    choices = [os.path.basename(f) for f in json_files]
-    return [
-        gr.Dropdown(choices=choices),  # For the first tab
-        gr.Dropdown(choices=choices),  # For the report tab
-    ]
+    return gr.Dropdown(choices=[os.path.basename(f) for f in json_files])
+
+
+def display_report(patient_id):
+    report = generate_report(patient_id)
+
+    markdown = f"""# 🏥 Patient Health Analysis Report
+
+## Patient ID: {patient_id}
+*Analysis Period: {report['time_period']}*
+
+---
+
+## 📊 Key Statistics
+| Metric | Value |
+|--------|--------|
+| Total Measurements | {report['data_quality']['total_measurements']} |
+| Symptoms Tracked | {report['data_quality']['symptoms_tracked']} |
+| Significant Changes | {report['data_quality']['significant_changes']} |
+
+---
+
+## 📈 Detailed Analysis
+{report['analysis']}
+
+---
+
+## 💡 Clinical Summary & Recommendations
+### Key Findings
+{report['summary']}
+
+---
+
+## ⚠️ Important Notes
+- This report was generated using AI assistance
+- All findings should be validated by a healthcare professional
+- Data quality metrics are provided for transparency
+- Symptom intensity ranges from 0 (none) to 1 (severe)
+
+---
+
+<div style='text-align: center; font-size: 0.8em; color: gray; padding: 20px;'>
+Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Report Version: 1.0
+</div>
+"""
+
+    # Generate PDF file with plot
+    pdf_path = generate_pdf_report(markdown, patient_id, report["plot"])
+
+    # Return values and update download button state
+    return (
+        report["plot"],  # Plot
+        markdown,  # Markdown report
+        gr.update(
+            value=pdf_path, interactive=True
+        ),  # Update download button with path and enable it
+    )
+
+
+def download_report(pdf_path: str) -> str:
+    """Return the PDF file path when download button is clicked"""
+    return pdf_path
 
 
 if __name__ == "__main__":
-    with gr.Blocks() as demo:
+    with gr.Blocks(theme=gr.themes.Soft()) as demo:
         with gr.Tab("Doctor's Note"):
             gr.Markdown("# Doctor's Note to JSON")
             gr.Markdown(
@@ -107,64 +165,68 @@ if __name__ == "__main__":
             ).then(fn=update_dropdown, outputs=file_selector)
 
         with gr.Tab("Patient Report"):
-            gr.Markdown("# Patient Health Report")
-            gr.Markdown(
-                "View a visual report of the patient's symptoms based on the latest doctor's note."
-            )
+            with gr.Row():
+                with gr.Column(scale=1):
+                    gr.Markdown(
+                        """
+                        # 🏥 Patient Health Report
+                        Generate a comprehensive health analysis report based on patient data.
+                        """
+                    )
+                    patient_id = gr.Number(
+                        label="Patient ID",
+                        value=42,
+                        precision=0,
+                    )
+                    generate_btn = gr.Button(
+                        "Generate Report",
+                        variant="primary",
+                        scale=1,
+                        min_width=100,
+                        size="lg",
+                    )
 
-            patient_id = gr.Number(
-                label="Patient ID",
-                value=1,
-                precision=0,
-            )
+            with gr.Row():
+                with gr.Column(scale=2):
+                    report_plot = gr.Plot(label="Symptom Timeline")
 
-            # Add file selector for the report tab
-            report_file_selector = gr.Dropdown(
-                label="Select note to generate report from",
-                choices=[],
-                interactive=True,
-            )
+            with gr.Row():
+                with gr.Column():
+                    report_markdown = gr.Markdown()
 
-            # Add plotly figure output
-            report_plot = gr.Plot(label="Symptom Timeline")
+            with gr.Row():
+                with gr.Column(scale=1, min_width=200):
+                    # Use DownloadButton with initial state
+                    download_btn = gr.DownloadButton(
+                        "📥 Download PDF Report",
+                        visible=True,
+                        interactive=False,  # Initially disabled
+                        variant="secondary",
+                        scale=1,
+                        min_width=200,
+                        value=None,  # Initial value is None
+                    )
 
-            generate_btn = gr.Button("Generate Report")
-
-            def generate_report_from_file(selected_file):
-                if not selected_file:
-                    return None
-
-                full_path = next(
-                    (f for f in json_files if os.path.basename(f) == selected_file),
-                    None,
-                )
-                if full_path:
-                    with open(full_path, "r") as file:
-                        features_data = json.load(file)
-                    return generate_report(
-                        1, features_data
-                    )  # Patient ID hardcoded for now
-                return None
-
+            # Generate report and update download button
             generate_btn.click(
-                fn=generate_report_from_file,
-                inputs=[report_file_selector],
-                outputs=[report_plot],
-            )
-
-            # Update both file selectors when new files are added
-            submit_btn.click(
-                fn=create_json_file,
-                inputs=input_text,
-                outputs=[output_files, json_preview],
-            ).then(
-                fn=update_dropdown,
-                outputs=[file_selector, report_file_selector],  # Update both dropdowns
+                fn=display_report,
+                inputs=[patient_id],
+                outputs=[
+                    report_plot,
+                    report_markdown,
+                    download_btn,  # Connect directly to download button
+                ],
             )
 
         demo.load(fn=clear_files, outputs=[output_files, json_preview]).then(
-            fn=update_dropdown,
-            outputs=[file_selector, report_file_selector],  # Update both dropdowns
+            fn=update_dropdown, outputs=file_selector
         )
 
-    demo.launch()
+    # Launch with a custom title and description
+    demo.launch(
+        share=False,
+        server_name="0.0.0.0",
+        server_port=7860,
+        show_api=False,
+        favicon_path=None,
+    )
