@@ -7,9 +7,7 @@ from datetime import datetime, date
 from models.diagnosis import extract_diagnosis as extract_diagnosis_model
 from models.features import extract_features as extract_features_model
 from models.visualizations import consolidate_symptoms as consolidate_symptoms_model, visualize_symptoms as visualize_symptoms_model
-import io
 import re
-from PIL import Image
 import time
 
 # Global variables
@@ -17,6 +15,7 @@ doctor_id = None
 patient_id = None
 json_files = []
 current_json_file = None
+consolidated_json = None
 consolidated_symptoms_df = pd.DataFrame()
 # State for json_files
 json_files_state = gr.State([])
@@ -153,19 +152,7 @@ def consolidate_symptoms():
 
 def visualize_symptoms():
     global consolidated_symptoms_df
-    figures = visualize_symptoms_model(consolidated_symptoms_df)
-    images = []
-    for fig in figures:
-        # Convert Plotly figure to PIL Image directly
-        if hasattr(fig, 'to_image'):
-            # Handle Plotly figures
-            img_bytes = fig.to_image(format="png")
-            img = Image.open(io.BytesIO(img_bytes))
-        else:
-            # Handle PIL Images (from wordcloud)
-            img = fig
-        images.append(img)
-    return images
+    return visualize_symptoms_model(consolidated_symptoms_df)
 
 def get_latest_json_file():
     doctor_notes_dir = 'data/doctor_notes/'
@@ -328,6 +315,9 @@ def is_dataframe_up_to_date(df, json_files):
         return False
     processed_files = set(df['doctor_note_file'].unique())
     current_files = set(map(os.path.basename, json_files))
+    print(processed_files)
+    print(current_files)
+    print(processed_files == current_files)
     return processed_files == current_files
 
 def on_previous_visits_tab_select():
@@ -335,13 +325,13 @@ def on_previous_visits_tab_select():
     return gr.Dropdown(choices=[os.path.basename(f) for f in json_files])
 
 def on_analytics_tab_select():
-    global json_files, consolidated_symptoms_df
-
+    global json_files, consolidated_json, consolidated_symptoms_df
+    
     # Data Consolidation
     try:
         if not is_dataframe_up_to_date(consolidated_symptoms_df, json_files):
-            result, consolidated_symptoms_df = consolidate_symptoms()
-        consolidation_json = result
+            consolidated_json, consolidated_symptoms_df = consolidate_symptoms()
+        consolidation_json = consolidated_json
         consolidation_table = consolidated_symptoms_df
     except Exception as e:
         print(f"Error in data consolidation: {str(e)}")
@@ -351,14 +341,14 @@ def on_analytics_tab_select():
     # Visualization
     try:
         if consolidated_symptoms_df is None or consolidated_symptoms_df.empty:
-            images = []
+            plot = None
         else:
-            images = visualize_symptoms()
+            plot = visualize_symptoms()
     except Exception as e:
         print(f"Error in visualization: {str(e)}")
-        images = []
+        plot = None
 
-    return consolidation_json, consolidation_table, images
+    return consolidation_json, consolidation_table, plot
 
 def update_diagnosis_with_delay(diagnosis, reasoning, current_file, selected_file):
     file_to_update = current_file if current_file else selected_file
@@ -519,7 +509,8 @@ with gr.Blocks() as demo:
                     with gr.Accordion("Data Consolidation", open=False):
                         consolidation_preview_json = gr.JSON(label="Consolidation Preview JSON")
                         consolidation_preview_table = gr.Dataframe(label="Consolidation Preview Table")
-                    visualization_gallery = gr.Gallery(label="Visualization Gallery")
+                    
+                    symptoms_plot = gr.Plot()
 
         patient_dropdown.change(
             fn=update_patient_id,
@@ -581,7 +572,7 @@ with gr.Blocks() as demo:
         analytics_tab.select(
             fn=on_analytics_tab_select,
             inputs=[],
-            outputs=[consolidation_preview_json, consolidation_preview_table, visualization_gallery]
+            outputs=[consolidation_preview_json, consolidation_preview_table, symptoms_plot]
         )
 
     # Login event
