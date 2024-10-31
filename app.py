@@ -6,7 +6,9 @@ import pandas as pd
 from datetime import datetime, date
 from models.diagnosis import extract_diagnosis as extract_diagnosis_model
 from models.features import extract_features as extract_features_model
-from models.visualizations import consolidate_symptoms as consolidate_symptoms_model, visualize_symptoms as visualize_symptoms_model
+from models.symptoms import get_all_symptom_data as symptoms_data_model
+from models.analytics import visualize_symptoms as visualize_symptoms_model
+from models.report import generate_report as generate_report_model, generate_pdf_report as generate_pdf_report_model
 import re
 import time
 
@@ -15,8 +17,9 @@ doctor_id = None
 patient_id = None
 json_files = []
 current_json_file = None
-consolidated_json = None
-consolidated_symptoms_df = pd.DataFrame()
+symptom_names_mapping_dict = None
+all_symptoms_df = pd.DataFrame()
+all_symptoms_list = None
 # State for json_files
 json_files_state = gr.State([])
 
@@ -144,15 +147,9 @@ def preview_json(selected_file):
 def update_file_selector():
     return gr.Dropdown(choices=[os.path.basename(f) for f in json_files])
 
-def consolidate_symptoms():
-    global json_files
-    global consolidated_symptoms_df
-    result, consolidated_symptoms_df = consolidate_symptoms_model(json_files)
-    return result, consolidated_symptoms_df
-
 def visualize_symptoms():
-    global consolidated_symptoms_df
-    return visualize_symptoms_model(consolidated_symptoms_df)
+    global all_symptoms_df
+    return visualize_symptoms_model(all_symptoms_df)
 
 def get_latest_json_file():
     doctor_notes_dir = 'data/doctor_notes/'
@@ -321,23 +318,25 @@ def on_previous_visits_tab_select():
     global json_files
     return gr.Dropdown(choices=[os.path.basename(f) for f in json_files])
 
-def on_analytics_tab_select():
-    global json_files, consolidated_json, consolidated_symptoms_df
-    
-    # Data Consolidation
+def fetch_symptom_data():
+    global json_files, symptom_names_mapping_dict, all_symptoms_df, all_symptoms_list
+    # Fetch symptom data by unifying the symptom data from the doctor notes
     try:
-        if not is_dataframe_up_to_date(consolidated_symptoms_df, json_files):
-            consolidated_json, consolidated_symptoms_df = consolidate_symptoms()
-        consolidation_fmt = consolidated_json
-        consolidation_table = consolidated_symptoms_df
+        if not is_dataframe_up_to_date(all_symptoms_df, json_files):
+            symptom_names_mapping_dict, all_symptoms_df, all_symptoms_list = symptoms_data_model(json_files)
     except Exception as e:
-        print(f"Error in data consolidation: {str(e)}")
-        consolidation_fmt = f"Error in data consolidation: {str(e)}"
-        consolidation_table = None
+        print(f"Error in mapping of symptom names: {str(e)}")
+        symptom_names_mapping_dict = f"Error in mapping of symptom names: {str(e)}"
+        all_symptoms_df = None
+
+def on_analytics_tab_select():
+    global json_files, symptom_names_mapping_dict, all_symptoms_df, all_symptoms_list
+    
+    fetch_symptom_data()  # Call the new function to fetch all smyptom data
 
     # Visualization
     try:
-        if consolidation_table is None or consolidation_table.empty:
+        if all_symptoms_df is None or all_symptoms_df.empty:
             plot = None
         else:
             plot = visualize_symptoms()
@@ -345,7 +344,7 @@ def on_analytics_tab_select():
         print(f"Error in visualization: {str(e)}")
         plot = None
 
-    return consolidation_fmt, consolidation_table, plot
+    return symptom_names_mapping_dict, all_symptoms_df, all_symptoms_list, plot
 
 def update_diagnosis_with_delay(diagnosis, reasoning, current_file, selected_file):
     file_to_update = current_file if current_file else selected_file
@@ -430,170 +429,299 @@ def update_symptom_with_delay(original_name, name, location, intensity, is_activ
     # Clear the status message
     yield gr.update(), json_content, gr.update(), gr.update(value="", visible=False), gr.update()
 
-# Gradio interface
-with gr.Blocks() as demo:
-    # Login Page
-    with gr.Column() as login_page:
-        gr.Markdown("# Login")
-        username_input = gr.Textbox(label="Username", placeholder="Enter your username")
-        password_input = gr.Textbox(label="Password", placeholder="Enter your password", type="password")
-        login_button = gr.Button("Login", variant="primary")
-        login_message = gr.Textbox(label="Login Status", visible=False)
 
-    # Home Page (hidden initially)
-    with gr.Column(visible=False) as home_page:
-        welcome_message = gr.Textbox(label="Welcome", interactive=False)
-        
-        with gr.Row() as patient_selection_row:
-            with gr.Column(scale=3):
-                with gr.Accordion("Patient Selection", open=True) as patient_picker_accordion:
-                    patients = load_patients()
-                    patient_choices = ["Pick a patient"] + list(patients.keys())
-                    patient_dropdown = gr.Dropdown(
-                        label="Select Patient", 
-                        choices=patient_choices,
-                        value="Pick a patient",
-                        interactive=True
-                    )
+
+def display_report():
+    global all_symptoms_list, patient_id
+    
+    fetch_symptom_data()  # Call the new function to fetch all symptom data
+
+    report = generate_report_model(patient_id, all_symptoms_list)
+
+    markdown = f"""# 🏥 Patient Health Analysis Report
+
+## Patient ID: {patient_id}
+*Analysis Period: {report['time_period']}*
+
+---
+
+## 📊 Key Statistics
+| Metric | Value |
+|--------|--------|
+| Total Measurements | {report['data_quality']['total_measurements']} |
+| Symptoms Tracked | {report['data_quality']['symptoms_tracked']} |
+| Significant Changes | {report['data_quality']['significant_changes']} |
+
+---
+
+## 📈 Detailed Analysis
+{report['analysis']}
+
+---
+
+## 💡 Clinical Summary & Recommendations
+### Key Findings
+{report['summary']}
+
+---
+
+## ⚠️ Important Notes
+- This report was generated using AI assistance
+- All findings should be validated by a healthcare professional
+- Data quality metrics are provided for transparency
+- Symptom intensity ranges from 0 (none) to 1 (severe)
+
+---
+
+<div style='text-align: center; font-size: 0.8em; color: gray; padding: 20px;'>
+Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Report Version: 1.0
+</div>
+"""
+
+    # Generate PDF file with plot
+    pdf_path = generate_pdf_report_model(markdown, patient_id, report["plot"])
+
+    # Return values and update download button state
+    return (
+        report["plot"],  # Plot
+        markdown,  # Markdown report
+        gr.update(
+            value=pdf_path, interactive=True
+        ),  # Update download button with path and enable it
+    )
+
+
+def download_report(pdf_path: str) -> str:
+    """Return the PDF file path when download button is clicked"""
+    return pdf_path
+
+
+if __name__ == "__main__":
+    # Gradio interface
+    with gr.Blocks(theme=gr.themes.Soft()) as demo:
+        # Login Page
+        with gr.Column() as login_page:
+            gr.Markdown("# Login")
+            username_input = gr.Textbox(label="Username", placeholder="Enter your username")
+            password_input = gr.Textbox(label="Password", placeholder="Enter your password", type="password")
+            login_button = gr.Button("Login", variant="primary")
+            login_message = gr.Textbox(label="Login Status", visible=False)
+
+        # Home Page (hidden initially)
+        with gr.Column(visible=False) as home_page:
+            welcome_message = gr.Textbox(label="Welcome", interactive=False)
             
-            with gr.Column(scale=1):
-                patient_display = gr.Textbox(label="Selected Patient", interactive=False)
-        
-        with gr.Column(visible=False) as ehr_section:
-            gr.Markdown("# EHR - Doctor's Note")
+            with gr.Row() as patient_selection_row:
+                with gr.Column(scale=3):
+                    with gr.Accordion("Patient Selection", open=True) as patient_picker_accordion:
+                        patients = load_patients()
+                        patient_choices = ["Pick a patient"] + list(patients.keys())
+                        patient_dropdown = gr.Dropdown(
+                            label="Select Patient", 
+                            choices=patient_choices,
+                            value="Pick a patient",
+                            interactive=True
+                        )
+                
+                with gr.Column(scale=1):
+                    patient_display = gr.Textbox(label="Selected Patient", interactive=False)
             
-            current_file = gr.State(None)  # Store the current JSON file name
+            with gr.Column(visible=False) as ehr_section:
+                gr.Markdown("# EHR - Doctor's Note")
+                
+                current_file = gr.State(None)  # Store the current JSON file name
+                
+                with gr.Tabs() as tabs:
+                    with gr.TabItem("Current visit"):
+                        gr.Markdown(
+                            """
+                            # 🗒️ Health Record
+                            Digital note taking on the patient's visit.
+                            """
+                        )
+                        date_picker_calendar = Calendar(type="datetime", label="Select date of doctor's note", info="Click the calendar icon to bring up the calendar.")
+                        
+                        with gr.Accordion("Doctor's Note", open=True) as note_accordion:
+                            with gr.Column() as note_component:
+                                input_text = gr.Textbox(label="Enter doctor's note", lines=10)
+                                submit_btn = gr.Button("Submit", variant="primary")
+                                new_note_btn = gr.Button("New doctor note", visible=False)
+                        
+                        with gr.Accordion("Diagnosis", open=True) as diagnosis_accordion:
+                            with gr.Column(visible=False) as diagnosis_component:
+                                with gr.Group():
+                                    with gr.Row():
+                                        diagnosis_textbox = gr.Textbox(label="Extracted Diagnosis", interactive=True)
+                                    with gr.Row():
+                                        diagnosis_update_btn = gr.Button("Update Diagnosis")
+                                
+                                with gr.Accordion("Diagnosis Reasoning", open=False):
+                                    reasoning_textbox = gr.Textbox(label="Reasoning", interactive=False)
+                                
+                                diagnosis_update_status = gr.Textbox(label="Diagnosis Update Status", visible=False, interactive=False)
+                        
+                        with gr.Accordion("Symptoms", open=True) as symptoms_accordion:
+                            with gr.Column(visible=False) as symptoms_component:
+                                symptom_dropdown = gr.Dropdown(label="Select Symptom", choices=[], interactive=True)
+                                with gr.Group():
+                                    symptom_name = gr.Textbox(label="Symptom Name")
+                                    symptom_location = gr.Textbox(label="Location")
+                                    symptom_intensity = gr.Slider(label="Intensity", minimum=0, maximum=10, step=1)
+                                    symptom_is_active = gr.Checkbox(label="Is Active")
+                                symptom_update_btn = gr.Button("Update Symptom")
+                                symptom_update_status = gr.Textbox(label="Symptom Update Status", visible=False, interactive=False)
+                        
+                    with gr.TabItem("Previous visits") as previous_visits_tab:
+                        gr.Markdown(
+                            """
+                            # 📚 Historical Health Records
+                            An overview of the historical patient visits.
+                            """
+                        )
+                        file_selector = gr.Dropdown(label="Select file to preview", choices=[], interactive=True)
+                        json_preview = gr.JSON(label="JSON Preview")
+                        
+                    with gr.TabItem("Analytics") as analytics_tab:
+                        gr.Markdown(
+                            """
+                            # 📉 Patient Health Analysis
+                            Data visualizations based on the doctor notes.
+                            """
+                        )
+                        with gr.Accordion("Symptom Data Preview", open=False):
+                            symptom_names_mapping_json_preview = gr.JSON(label="Symptom Names Mapping Preview")
+                            symptom_table_preview = gr.Dataframe(label="Symptom Data Table Preview")
+                            symptom_list_json_preview = gr.JSON(label="Symptom Data List Preview")
+                        
+                        symptoms_plot = gr.Plot()
+                        
+                    with gr.TabItem("Report") as report_tab:
+                        with gr.Row():
+                            with gr.Column(scale=1):
+                                gr.Markdown(
+                                    """
+                                    # 🏥 Patient Health Report
+                                    Generate a comprehensive health analysis report based on patient data from the doctor notes.
+                                    """
+                                )
+
+                        with gr.Row():
+                            with gr.Column(scale=2):
+                                report_plot = gr.Plot(label="Symptom Timeline")
+
+                        with gr.Row():
+                            with gr.Column():
+                                report_markdown = gr.Markdown()
+
+                        with gr.Row():
+                            with gr.Column(scale=1, min_width=200):
+                                # Use DownloadButton with initial state
+                                download_btn = gr.DownloadButton(
+                                    "📥 Download PDF Report",
+                                    visible=True,
+                                    interactive=False,  # Initially disabled
+                                    variant="secondary",
+                                    scale=1,
+                                    min_width=200,
+                                    value=None,  # Initial value is None
+                                )
+
+            patient_dropdown.change(
+                fn=update_patient_id,
+                inputs=patient_dropdown,
+                outputs=[patient_picker_accordion, patient_display, ehr_section, welcome_message, json_files_state]
+            )
+
+            file_selector.change(
+                fn=preview_json,
+                inputs=file_selector,
+                outputs=json_preview
+            )
+
+            submit_btn.click(
+                fn=submit_note,
+                inputs=[input_text, date_picker_calendar],
+                outputs=[
+                    note_accordion, diagnosis_textbox, reasoning_textbox, diagnosis_component, 
+                    json_preview, current_file, submit_btn, new_note_btn, symptom_dropdown,
+                    symptom_name, symptom_location, symptom_intensity, symptom_is_active,
+                    symptoms_component
+                ]
+            ).then(fn=update_file_selector, outputs=file_selector)
+
+            new_note_btn.click(
+                fn=reset_interface,
+                inputs=[],
+                outputs=[
+                    current_file, input_text, diagnosis_component, submit_btn, new_note_btn, 
+                    note_accordion, symptom_dropdown,
+                    gr.Group([symptom_name, symptom_location, symptom_intensity, symptom_is_active]),
+                    diagnosis_accordion,
+                    symptoms_accordion
+                ]
+            )
+
+            diagnosis_update_btn.click(
+                fn=update_diagnosis_with_delay,
+                inputs=[diagnosis_textbox, reasoning_textbox, current_file, file_selector],
+                outputs=[diagnosis_update_status, json_preview, diagnosis_update_status]
+            )
+
+            symptom_update_btn.click(
+                fn=update_symptom_with_delay,
+                inputs=[
+                    symptom_dropdown,
+                    symptom_name, symptom_location, symptom_intensity, symptom_is_active,
+                    current_file, file_selector
+                ],
+                outputs=[diagnosis_update_status, json_preview, symptom_dropdown, symptom_update_status, symptom_update_status]
+            )
+
+            previous_visits_tab.select(
+                fn=on_previous_visits_tab_select,
+                inputs=[],
+                outputs=[file_selector]
+            )
+
+            analytics_tab.select(
+                fn=on_analytics_tab_select,
+                inputs=[],
+                outputs=[symptom_names_mapping_json_preview, symptom_table_preview, symptom_list_json_preview, symptoms_plot]
+            )
             
-            with gr.Tabs() as tabs:
-                with gr.TabItem("Current visit"):
-                    date_picker_calendar = Calendar(type="datetime", label="Select date of doctor's note", info="Click the calendar icon to bring up the calendar.")
-                    
-                    with gr.Accordion("Doctor's Note", open=True) as note_accordion:
-                        with gr.Column() as note_component:
-                            input_text = gr.Textbox(label="Enter doctor's note", lines=10)
-                            submit_btn = gr.Button("Submit", variant="primary")
-                            new_note_btn = gr.Button("New doctor note", visible=False)
-                    
-                    with gr.Accordion("Diagnosis", open=True) as diagnosis_accordion:
-                        with gr.Column(visible=False) as diagnosis_component:
-                            with gr.Group():
-                                with gr.Row():
-                                    diagnosis_textbox = gr.Textbox(label="Extracted Diagnosis", interactive=True)
-                                with gr.Row():
-                                    diagnosis_update_btn = gr.Button("Update Diagnosis")
-                            
-                            with gr.Accordion("Diagnosis Reasoning", open=False):
-                                reasoning_textbox = gr.Textbox(label="Reasoning", interactive=False)
-                            
-                            diagnosis_update_status = gr.Textbox(label="Diagnosis Update Status", visible=False, interactive=False)
-                    
-                    with gr.Accordion("Symptoms", open=True) as symptoms_accordion:
-                        with gr.Column(visible=False) as symptoms_component:
-                            symptom_dropdown = gr.Dropdown(label="Select Symptom", choices=[], interactive=True)
-                            with gr.Group():
-                                symptom_name = gr.Textbox(label="Symptom Name")
-                                symptom_location = gr.Textbox(label="Location")
-                                symptom_intensity = gr.Slider(label="Intensity", minimum=0, maximum=10, step=1)
-                                symptom_is_active = gr.Checkbox(label="Is Active")
-                            symptom_update_btn = gr.Button("Update Symptom")
-                            symptom_update_status = gr.Textbox(label="Symptom Update Status", visible=False, interactive=False)
-                    
-                with gr.TabItem("Previous visits") as previous_visits_tab:
-                    file_selector = gr.Dropdown(label="Select file to preview", choices=[], interactive=True)
-                    json_preview = gr.JSON(label="JSON Preview")
-                    
-                with gr.TabItem("Analytics") as analytics_tab:
-                    with gr.Accordion("Data Consolidation", open=False):
-                        consolidation_preview_json = gr.JSON(label="Consolidation Preview JSON")
-                        consolidation_preview_table = gr.Dataframe(label="Consolidation Preview Table")
-                    
-                    symptoms_plot = gr.Plot()
+            report_tab.select(
+                fn=display_report,
+                inputs=[],
+                outputs=[
+                    report_plot,
+                    report_markdown,
+                    download_btn,
+                ],
+            )
 
-        patient_dropdown.change(
-            fn=update_patient_id,
-            inputs=patient_dropdown,
-            outputs=[patient_picker_accordion, patient_display, ehr_section, welcome_message, json_files_state]
+        # Login event
+        login_event = login_button.click(
+            login, 
+            inputs=[username_input, password_input], 
+            outputs=[login_page, home_page, login_message, welcome_message]
+        )
+        username_input.submit(
+            login,
+            inputs=[username_input, password_input],
+            outputs=[login_page, home_page, login_message, welcome_message]
+        )
+        password_input.submit(
+            login,
+            inputs=[username_input, password_input],
+            outputs=[login_page, home_page, login_message, welcome_message]
         )
 
-        file_selector.change(
-            fn=preview_json,
-            inputs=file_selector,
-            outputs=json_preview
+        # Symptom dropdown event
+        symptom_dropdown.change(
+            fn=load_symptom,
+            inputs=[symptom_dropdown, current_file, file_selector],
+            outputs=[symptom_name, symptom_location, symptom_intensity, symptom_is_active]
         )
 
-        submit_btn.click(
-            fn=submit_note,
-            inputs=[input_text, date_picker_calendar],
-            outputs=[
-                note_accordion, diagnosis_textbox, reasoning_textbox, diagnosis_component, 
-                json_preview, current_file, submit_btn, new_note_btn, symptom_dropdown,
-                symptom_name, symptom_location, symptom_intensity, symptom_is_active,
-                symptoms_component
-            ]
-        ).then(fn=update_file_selector, outputs=file_selector)
-
-        new_note_btn.click(
-            fn=reset_interface,
-            inputs=[],
-            outputs=[
-                current_file, input_text, diagnosis_component, submit_btn, new_note_btn, 
-                note_accordion, symptom_dropdown,
-                gr.Group([symptom_name, symptom_location, symptom_intensity, symptom_is_active]),
-                diagnosis_accordion,
-                symptoms_accordion
-            ]
-        )
-
-        diagnosis_update_btn.click(
-            fn=update_diagnosis_with_delay,
-            inputs=[diagnosis_textbox, reasoning_textbox, current_file, file_selector],
-            outputs=[diagnosis_update_status, json_preview, diagnosis_update_status]
-        )
-
-        symptom_update_btn.click(
-            fn=update_symptom_with_delay,
-            inputs=[
-                symptom_dropdown,
-                symptom_name, symptom_location, symptom_intensity, symptom_is_active,
-                current_file, file_selector
-            ],
-            outputs=[diagnosis_update_status, json_preview, symptom_dropdown, symptom_update_status, symptom_update_status]
-        )
-
-        previous_visits_tab.select(
-            fn=on_previous_visits_tab_select,
-            inputs=[],
-            outputs=[file_selector]
-        )
-
-        analytics_tab.select(
-            fn=on_analytics_tab_select,
-            inputs=[],
-            outputs=[consolidation_preview_json, consolidation_preview_table, symptoms_plot]
-        )
-
-    # Login event
-    login_event = login_button.click(
-        login, 
-        inputs=[username_input, password_input], 
-        outputs=[login_page, home_page, login_message, welcome_message]
-    )
-    username_input.submit(
-        login,
-        inputs=[username_input, password_input],
-        outputs=[login_page, home_page, login_message, welcome_message]
-    )
-    password_input.submit(
-        login,
-        inputs=[username_input, password_input],
-        outputs=[login_page, home_page, login_message, welcome_message]
-    )
-
-    # Symptom dropdown event
-    symptom_dropdown.change(
-        fn=load_symptom,
-        inputs=[symptom_dropdown, current_file, file_selector],
-        outputs=[symptom_name, symptom_location, symptom_intensity, symptom_is_active]
-    )
-
-demo.launch()
+    demo.launch()
