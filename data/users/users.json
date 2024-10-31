@@ -1,9 +1,9 @@
 {
     "0": {
-        "username": "test",
-        "first_name": "Jimmy",
-        "last_name": "Vlekke",
-        "password": "test",
+        "username": "ali",
+        "first_name": "Ali",
+        "last_name": "Ghodsi",
+        "password": "databricks",
         "role": "doctor"
     },
     "1": {

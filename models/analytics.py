@@ -7,10 +7,12 @@ def visualize_symptoms(df):
         return None
 
     # Ensure 'is_active' is of boolean type
-    df['is_active'] = df['is_active'].astype(bool)
+    df['is_active'] = df['is_active'].astype(bool) # TODO: Use typing
     # Convert 'intensity' to numeric type
     df['intensity'] = pd.to_numeric(df['intensity'], errors='coerce')
     df['date'] = pd.to_datetime(df['date'])
+    
+    # Size of X-axis
     date_range = df['date'].agg(['min', 'max'])
     active_symptoms = df[df['is_active']].copy()
 
@@ -24,7 +26,7 @@ def visualize_symptoms(df):
 
     def get_color_from_intensity(intensity):
         # Clamp intensity to be within [0, 1]
-        intensity = max(0, min(intensity, 1))
+        intensity = max(0, min(intensity, 1)) #TODO: Re-scaling of intensity according to subjective perception of LLM
         
         if intensity <= 0:
             return 'rgba(0,255,0,0.35)'
@@ -49,11 +51,11 @@ def visualize_symptoms(df):
             b = 0
             return f'rgba({r},{g},{b},0.35)'
 
-    # Enhanced hover text with emoji indicators and reasons
+    # Enhanced hover text with emoji indicators and reasoning.
     active_symptoms['hover_text'] = (
         '📅 Date: ' + active_symptoms['date'].dt.strftime('%Y-%m-%d') + 
         '<br>🔥 Intensity: ' + active_symptoms['intensity'].astype(str) +
-        '<br>📝 Reason: ' + active_symptoms['raw_data']
+        '<br>📝 raw_data: ' + active_symptoms['raw_data']
     )
 
     fig = go.Figure()
@@ -95,34 +97,6 @@ def visualize_symptoms(df):
                     x1 = current_date + (next_date - current_date) * ((step+1)/num_steps)
                     intensity = start_intensity + (end_intensity - start_intensity) * (step/num_steps)
                     
-                    # Add a trail to the leftmost box of a sequence
-                    if step == 0:
-                        x0 = current_date
-                        x1 = current_date + (next_date - current_date) * (0.1/num_steps)
-                        fig.add_shape(
-                            type="rect",
-                            x0=x0,
-                            x1=x1,
-                            y0=y_position-0.35,
-                            y1=y_position+0.35,
-                            fillcolor=get_color_from_intensity(intensity),
-                            line=dict(width=0),
-                            layer='below'
-                        )
-                    # Add a transparent trail to the left of the next box if the sequence was interrupted by an is_active = False
-                    elif len(inactive_between) > 0:
-                        x0 = current_date
-                        x1 = current_date + (next_date - current_date) * (0.1/num_steps)
-                        fig.add_shape(
-                            type="rect",
-                            x0=x0,
-                            x1=x1,
-                            y0=y_position-0.35,
-                            y1=y_position+0.35,
-                            fillcolor='rgba(255,255,255,0)',
-                            line=dict(width=0),
-                            layer='below'
-                        )
                     
                     fig.add_shape(
                         type="rect",
